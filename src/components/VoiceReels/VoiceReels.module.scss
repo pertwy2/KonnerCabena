@@ -1,0 +1,169 @@
+@use "../../styles/theme" as *;
+
+.section {
+  @include section;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.heading {
+  @include section-heading;
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.channel {
+  @include raised;
+  border-radius: 22px;
+  padding: 24px 30px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  transition:
+    box-shadow 380ms $spring,
+    transform 380ms $spring;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Pressing a channel sinks it, like a console key that stays down.
+.isPlaying {
+  transform: translateY(0);
+  @include pressed(6px, 14px);
+
+  &:hover {
+    transform: translateY(0);
+  }
+
+  .led {
+    background: var(--accent);
+    box-shadow:
+      0 0 10px var(--accent),
+      0 0 3px var(--accent);
+  }
+
+  .bar {
+    background: var(--accent);
+    animation: pulse 1000ms ease-in-out infinite;
+  }
+}
+
+.key {
+  @include key;
+  @include raised;
+  flex: 0 0 auto;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $ink;
+}
+
+.meta {
+  flex: 0 0 190px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ccc2b6;
+  box-shadow: inset 1px 1px 2px rgba(150, 136, 124, 0.6);
+  transition:
+    background $ease,
+    box-shadow $ease;
+  flex: 0 0 auto;
+}
+
+.n {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: $muted;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.note {
+  font-size: 13px;
+}
+
+.bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 46px;
+  flex: 1 1 auto;
+}
+
+.bar {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 2px;
+  background: #c9bfb3;
+  transform-origin: center;
+  transition: background $ease;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.dur {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  min-width: 52px;
+  text-align: right;
+}
+
+// Below this width the strip stops being a single row: controls stay on
+// top, the waveform wraps to its own line beneath them.
+@include at($bp-reel) {
+  .channel {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 20px;
+  }
+  .meta {
+    flex: 1 1 auto;
+  }
+  .dur {
+    order: 4;
+  }
+  .bars {
+    flex: 1 1 100%;
+    order: 5;
+    gap: 2px;
+  }
+}

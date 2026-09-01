@@ -1,0 +1,65 @@
+@use "../../styles/theme" as *;
+
+.section {
+  @include section;
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.heading {
+  @include section-heading;
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+// Staggered rather than gridded — praise overheard, not a wall of cards.
+.quote {
+  @include pressed;
+  margin: 0;
+  border-radius: 24px;
+  padding: 40px 46px;
+  max-width: 76%;
+  align-self: flex-start;
+}
+
+.right {
+  align-self: flex-end;
+}
+
+.text {
+  margin: 0 0 18px;
+  font-size: 21px;
+  line-height: 1.6;
+}
+
+.by {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+@include at($bp-stack) {
+  .quote {
+    max-width: 100%;
+    align-self: stretch;
+  }
+  .right {
+    align-self: stretch;
+  }
+}
+
+@include at($bp-phone) {
+  .quote {
+    padding: 28px 24px;
+  }
+  .text {
+    font-size: 17px;
+  }
+}

@@ -1,0 +1,156 @@
+// =============================================================
+//  Konner Cabena — neumorphic material system
+//
+//  One continuous surface: every panel is pressed into or pushed
+//  out of the same warm ground. The light source is fixed
+//  top-left everywhere — inconsistent light direction is what
+//  makes neumorphism look broken, so never flip these offsets.
+// =============================================================
+
+// ---- ground + ink -------------------------------------------------
+$surface:     #e9e3db; // warm pale greige, mid-light so both shadows read
+$ink:         #2f2a25; // headings + body      ~12:1 on $surface
+$muted:       #6b6259; // secondary copy       ~5.5:1, passes AA
+$placeholder: #9c8f81; // unfilled content markers
+
+$hl: rgba(255, 252, 248, 0.92); // top-left highlight
+$sd: rgba(168, 154, 140, 0.45); // bottom-right shadow — warm, never black
+
+// ---- accents, from the logo ---------------------------------------
+// Fills, indicators, pressed states and glows ONLY. Never body text:
+// coral on this ground is ~2.3:1 and fails contrast outright.
+$coral:   #fb6868;
+$teal:    #5a9db5;
+$mustard: #face68;
+
+// Darkened variants, for the rare case accent-coloured *text* is needed.
+$coral-ink:   #c13f3f;
+$teal-ink:    #2e6b83;
+$mustard-ink: #8a6b12;
+
+// ---- motion -------------------------------------------------------
+// The overshoot is what makes a press feel cushioned rather than mechanical.
+$spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+$ease: 340ms $spring;
+
+// ---- breakpoints --------------------------------------------------
+$bp-wide:   1180px;
+$bp-stack:   940px;
+$bp-reel:    780px;
+$bp-phone:   680px;
+$bp-narrow:  420px;
+
+@mixin at($max) {
+  @media (max-width: $max) {
+    @content;
+  }
+}
+
+// ---- elevation ----------------------------------------------------
+// Parens around the negations stop Sass reading `-$o -$o` as subtraction.
+@mixin raised($o: 8px, $b: 20px) {
+  box-shadow: (-$o) (-$o) $b $hl, $o $o $b $sd;
+}
+
+@mixin raised-lg($o: 14px, $b: 34px) {
+  box-shadow: (-$o) (-$o) $b rgba(255, 252, 248, 0.95), $o $o $b rgba(168, 154, 140, 0.48);
+}
+
+@mixin pressed($o: 5px, $b: 12px) {
+  box-shadow: inset (-$o) (-$o) $b $hl, inset $o $o $b $sd;
+}
+
+@mixin pressed-deep($o: 8px, $b: 18px) {
+  box-shadow:
+    inset (-$o) (-$o) $b rgba(255, 252, 248, 0.8),
+    inset $o $o $b rgba(168, 154, 140, 0.5);
+}
+
+// ---- type ---------------------------------------------------------
+// Relief, not outline — the ink stays dark so legibility is untouched.
+@mixin carved {
+  font-family: var(--font-display), "Helvetica Neue", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+  text-shadow:
+    1px 1px 0 rgba(255, 252, 248, 0.9),
+    -1px -1px 2px rgba(150, 136, 124, 0.45);
+}
+
+@mixin eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: $muted;
+}
+
+// ---- interactive --------------------------------------------------
+// Every tappable thing clears 44px; soft shadows alone are not a
+// sufficient focus indicator, so focus also gets an accent ring.
+@mixin key {
+  border: 0;
+  background: $surface;
+  color: $ink;
+  font: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  transition:
+    box-shadow $ease,
+    transform $ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    @include pressed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent, #{$coral});
+    outline-offset: 4px;
+  }
+}
+
+// ---- shared section shell -----------------------------------------
+// The page is one continuous surface, so sections carry no background
+// or divider of their own — only rhythm.
+@mixin section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 56px 130px;
+
+  @include at($bp-wide) {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  @include at($bp-phone) {
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-bottom: 76px;
+  }
+  @include at($bp-narrow) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@mixin section-heading {
+  @include carved;
+  font-size: 54px;
+  margin: 0;
+
+  @include at($bp-wide) {
+    font-size: 46px;
+  }
+  @include at($bp-phone) {
+    font-size: 30px;
+  }
+  @include at($bp-narrow) {
+    font-size: 27px;
+  }
+}

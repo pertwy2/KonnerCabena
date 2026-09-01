@@ -1,0 +1,99 @@
+@use "../../styles/theme" as *;
+
+.section {
+  @include section;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  align-items: center;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  text-align: center;
+}
+
+.heading {
+  @include section-heading;
+}
+
+.blurb {
+  margin: 0;
+  max-width: 46ch;
+  color: $muted;
+}
+
+// The deepest recess on the page — the reel sits furthest into the material.
+.frame {
+  @include pressed-deep;
+  width: 100%;
+  border-radius: 30px;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 40px;
+  overflow: hidden;
+}
+
+.embed {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 20px;
+}
+
+.key {
+  @include key;
+  @include raised-lg;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $ink;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+.led {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ccc2b6;
+  box-shadow: inset 1px 1px 2px rgba(150, 136, 124, 0.6);
+  transition:
+    background $ease,
+    box-shadow $ease;
+}
+
+.on {
+  background: var(--accent);
+  box-shadow:
+    0 0 10px var(--accent),
+    0 0 3px var(--accent);
+}
+
+@include at($bp-phone) {
+  .frame {
+    border-radius: 20px;
+    padding: 20px;
+    gap: 16px;
+  }
+  .key {
+    width: 74px;
+    height: 74px;
+  }
+}

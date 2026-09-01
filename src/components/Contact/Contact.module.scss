@@ -1,0 +1,216 @@
+@use "../../styles/theme" as *;
+
+.section {
+  @include section;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 72px;
+  align-items: start;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-top: 8px;
+}
+
+.heading {
+  @include section-heading;
+}
+
+.blurb {
+  margin: 0;
+  color: $muted;
+  max-width: 40ch;
+}
+
+.direct {
+  @include raised;
+  border-radius: 18px;
+  padding: 20px 24px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.directLabel {
+  @include eyebrow;
+  font-size: 11px;
+  margin: 0;
+}
+
+.email {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.elsewhereLabel {
+  @include eyebrow;
+  margin: 14px 0 0;
+}
+
+.socials {
+  display: flex;
+  gap: 14px;
+}
+
+.social {
+  @include raised;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $ink;
+  transition:
+    box-shadow $ease,
+    transform $ease;
+}
+
+a.social {
+  &:hover {
+    color: $ink;
+    transform: translateY(-2px);
+  }
+  &:active {
+    transform: translateY(1px);
+    @include pressed;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+}
+
+// ---- form ----------------------------------------------------------
+.card {
+  @include raised-lg;
+  border-radius: 28px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $muted;
+  }
+}
+
+.input {
+  @include pressed;
+  width: 100%;
+  border: 0;
+  background: $surface;
+  font: inherit;
+  font-size: 16px;
+  color: $ink;
+  padding: 16px 20px;
+  border-radius: 14px;
+  min-height: 44px;
+  transition: box-shadow 300ms $spring;
+
+  &::placeholder {
+    color: #a69a8d;
+  }
+
+  // A soft inset alone is not a sufficient focus indicator; add a ring.
+  &:focus {
+    outline: none;
+    @include pressed;
+    box-shadow:
+      inset -5px -5px 12px $hl,
+      inset 5px 5px 12px $sd,
+      0 0 0 2px var(--accent);
+  }
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.submit {
+  @include key;
+  @include raised;
+  margin-top: 6px;
+  padding: 18px 28px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  background: $coral;
+  color: #23201c;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+  }
+}
+
+.ok,
+.err,
+.notice {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.ok {
+  color: $teal-ink;
+}
+
+.err {
+  color: $coral-ink;
+}
+
+.notice {
+  color: $muted;
+
+  code {
+    font-size: 13px;
+    background: rgba(168, 154, 140, 0.16);
+    padding: 2px 6px;
+    border-radius: 5px;
+  }
+}
+
+@include at($bp-wide) {
+  .section {
+    gap: 52px;
+  }
+}
+
+@include at($bp-stack) {
+  .section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@include at($bp-phone) {
+  .card {
+    padding: 24px;
+  }
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
