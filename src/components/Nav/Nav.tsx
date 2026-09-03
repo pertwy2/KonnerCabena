@@ -1,38 +1,46 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { nav } from "@/lib/content";
 import { SITE } from "@/lib/site";
 import s from "./Nav.module.scss";
 
 /**
- * Sticky nav with a centred logo that starts large and eases down to a
- * small mark once the page scrolls.
+ * Sticky nav with a logo that continuously scales from 150px (top) to 34px
+ * (scrolled) based on actual scroll position, creating a smooth easing effect.
  */
 export default function Nav() {
-  // Initialize state based on current scroll position to avoid animation bounce.
-  // Using a lazy initializer so the check runs only once on client hydration.
-  const [stuck, setStuck] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.scrollY > 80;
-  });
+  const headerRef = useRef<HTMLHeadElement>(null);
 
   useEffect(() => {
     let rafId: number;
     const onScroll = () => {
-      // Hysteresis: different thresholds to avoid fluttering near the boundary.
-      // Turn on at 80px, turn off at 20px. This prevents rapid toggling when
-      // scrolling slowly or moving back/forth near the threshold.
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        setStuck((prev) =>
-          prev ? window.scrollY > 20 : window.scrollY > 80
-        );
+        if (!headerRef.current) return;
+
+        const scrollY = window.scrollY;
+        const maxScroll = 120;
+        const maxHeight = 150;
+        const minHeight = 34;
+
+        // Linear interpolation: as scrollY goes from 0 to 120px,
+        // logo height goes from 150px to 34px
+        const progress = Math.min(scrollY / maxScroll, 1);
+        const height = maxHeight - (maxHeight - minHeight) * progress;
+
+        headerRef.current.style.setProperty("--logo-height", `${height}px`);
+
+        // Update the sticky shadow for visual continuity
+        const isStuck = scrollY > 80;
+        headerRef.current.classList.toggle(s.stuck, isStuck);
       });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // Set initial state
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafId);
@@ -43,7 +51,7 @@ export default function Nav() {
   const right = nav.slice(3);
 
   return (
-    <header className={`${s.nav} ${stuck ? s.stuck : ""}`}>
+    <header ref={headerRef} className={s.nav}>
       <div className={s.inner}>
         <nav className={`${s.group} ${s.left}`} aria-label="Sections">
           {left.map((l) => (

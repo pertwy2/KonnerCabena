@@ -7,6 +7,7 @@
   background: color-mix(in srgb, #{$surface} 88%, transparent);
   backdrop-filter: blur(14px);
   transition: box-shadow 420ms $spring;
+  --logo-height: 150px;
 }
 
 .stuck {
@@ -65,23 +66,13 @@
 .logo {
   justify-self: center;
   display: block;
-  height: 150px;
-  transition: height 420ms $spring;
+  height: var(--logo-height);
 
   img {
     height: 100%;
     width: auto;
     display: block;
     filter: drop-shadow(9px 12px 16px rgba(140, 124, 110, 0.38));
-    transition: filter 420ms $spring;
-  }
-
-  .stuck & {
-    height: 34px;
-
-    img {
-      filter: drop-shadow(2px 3px 4px rgba(140, 124, 110, 0.32));
-    }
   }
 }
 
@@ -116,9 +107,6 @@
     padding: 14px 11px;
     font-size: 13px;
   }
-  .logo {
-    height: 122px;
-  }
 }
 
 @include at($bp-stack) {
@@ -140,13 +128,6 @@
     .stuck & {
       padding-top: 9px;
       padding-bottom: 9px;
-    }
-  }
-  .logo {
-    height: 58px;
-
-    .stuck & {
-      height: 24px;
     }
   }
   .cta {
