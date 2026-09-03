@@ -3,7 +3,7 @@ import Contact from "@/components/Contact/Contact";
 import Hero from "@/components/Hero/Hero";
 import Nav from "@/components/Nav/Nav";
 import ShowReel from "@/components/ShowReel/ShowReel";
-import Testimonials from "@/components/Testimonials/Testimonials";
+// import Testimonials from "@/components/Testimonials/Testimonials";
 import VoiceReels from "@/components/VoiceReels/VoiceReels";
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
         <VoiceReels />
         <About />
         <ShowReel />
-        <Testimonials />
+        {/* <Testimonials /> */}
         <Contact />
       </main>
     </>
