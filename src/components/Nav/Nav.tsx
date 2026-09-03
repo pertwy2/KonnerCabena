@@ -16,17 +16,19 @@ export default function Nav() {
   useEffect(() => {
     let rafId: number;
     const onScroll = () => {
-      // Cancel any pending update and schedule a new one on the next frame.
-      // This throttles scroll events to match the browser's repaint rate (60fps)
-      // and prevents thrashing the DOM or interrupting CSS transitions.
+      // Hysteresis: different thresholds to avoid fluttering near the boundary.
+      // Turn on at 80px, turn off at 20px. This prevents rapid toggling when
+      // scrolling slowly or moving back/forth near the threshold.
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        setStuck(window.scrollY > 30);
+        setStuck((prev) =>
+          prev ? window.scrollY > 20 : window.scrollY > 80
+        );
       });
     };
 
     // Check initial state
-    setStuck(window.scrollY > 30);
+    setStuck(window.scrollY > 80);
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
