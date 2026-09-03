@@ -2,6 +2,7 @@
  * Single source of truth for anything that changes when the site moves,
  * gets a domain, or wires up a real form.
  */
+import { about } from "./content";
 
 /**
  * ⚠️  CHANGE THIS BEFORE DEPLOYING.
@@ -49,7 +50,14 @@ export const LINKS: { label: string; href: string | null }[] = [
   { label: "YouTube", href: null },
 ];
 
-/** Only real URLs belong in `sameAs` — placeholders would poison the schema. */
-export const sameAs = LINKS.map((l) => l.href).filter(
-  (h): h is string => typeof h === "string" && h.length > 0,
-);
+/**
+ * `sameAs` is how a search engine connects this page to the same person
+ * elsewhere, so the professional profiles matter more here than the socials —
+ * an IMDb or Spotlight entry is the authoritative "this Konner Cabena is that
+ * Konner Cabena" signal. Both sources feed it; only real URLs survive the
+ * filter, because a placeholder would poison the schema.
+ */
+export const sameAs = [
+  ...LINKS.map((l) => l.href),
+  ...about.credentials.map((c) => c.href),
+].filter((h): h is string => typeof h === "string" && h.length > 0);

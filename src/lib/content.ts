@@ -28,9 +28,9 @@ export const about = {
   ],
   credentialsLabel: "Credentials",
   credentials: [
-    { label: "[IMDb]", href: null },
-    { label: "[Spotlight]", href: null },
-    { label: "[Agent / Representation]", href: null },
+    { label: "IMDb", href: "https://www.imdb.com/name/nm14955974/" },
+    { label: "Spotlight", href: "https://app.spotlight.com/1018-3499-6502" },
+    { label: "SN Voices", href: "https://snvoices.com/gentlemen/konner-cabena/" },
   ] as { label: string; href: string | null }[],
 } as const;
 
