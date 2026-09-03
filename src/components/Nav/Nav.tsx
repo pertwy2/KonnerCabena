@@ -61,15 +61,17 @@ export default function Nav() {
           ))}
         </nav>
 
-        <div className={s.logo}>
-          <Image
-            src="/logo.png"
-            alt={`${SITE.name} — ${SITE.role}`}
-            width={380}
-            height={293}
-            priority
-          />
-        </div>
+        <a href="#" className={s.logoLink}>
+          <div className={s.logo}>
+            <Image
+              src="/logo.png"
+              alt={`${SITE.name} — ${SITE.role}`}
+              width={380}
+              height={293}
+              priority
+            />
+          </div>
+        </a>
 
         <div className={`${s.group} ${s.right}`}>
           {right.map((l) => (
