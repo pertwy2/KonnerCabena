@@ -14,10 +14,25 @@ export default function Nav() {
   const [stuck, setStuck] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setStuck(window.scrollY > 30);
-    onScroll();
+    let rafId: number;
+    const onScroll = () => {
+      // Cancel any pending update and schedule a new one on the next frame.
+      // This throttles scroll events to match the browser's repaint rate (60fps)
+      // and prevents thrashing the DOM or interrupting CSS transitions.
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setStuck(window.scrollY > 30);
+      });
+    };
+
+    // Check initial state
+    setStuck(window.scrollY > 30);
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const left = nav.slice(0, 3);
