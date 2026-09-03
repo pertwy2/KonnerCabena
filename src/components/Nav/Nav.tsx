@@ -11,7 +11,12 @@ import s from "./Nav.module.scss";
  * small mark once the page scrolls.
  */
 export default function Nav() {
-  const [stuck, setStuck] = useState(false);
+  // Initialize state based on current scroll position to avoid animation bounce.
+  // Using a lazy initializer so the check runs only once on client hydration.
+  const [stuck, setStuck] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.scrollY > 80;
+  });
 
   useEffect(() => {
     let rafId: number;
@@ -26,9 +31,6 @@ export default function Nav() {
         );
       });
     };
-
-    // Check initial state
-    setStuck(window.scrollY > 80);
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
