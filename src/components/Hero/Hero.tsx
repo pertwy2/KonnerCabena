@@ -1,4 +1,6 @@
-import { hero } from "@/lib/content";
+import Image from "next/image";
+import { hero, isPlaceholder } from "@/lib/content";
+import { SITE } from "@/lib/site";
 import s from "./Hero.module.scss";
 
 /**
@@ -32,7 +34,22 @@ export default function Hero() {
       </div>
 
       <div className={s.photo}>
-        <span className="ph">{hero.photo}</span>
+        {isPlaceholder(hero.photo) ? (
+          <span className="ph">{hero.photo}</span>
+        ) : (
+          // Sits inside the recess rather than covering it, so the pressed
+          // shadow still frames the print.
+          <div className={s.frame}>
+            <Image
+              src={hero.photo}
+              alt={`${SITE.name}, ${SITE.role.toLowerCase()}`}
+              fill
+              sizes="(max-width: 940px) 90vw, 45vw"
+              className={s.img}
+              priority
+            />
+          </div>
+        )}
       </div>
     </section>
   );

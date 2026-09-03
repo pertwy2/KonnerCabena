@@ -49,10 +49,12 @@ export type Reel = {
 export const reels = {
   heading: "Voice Reels",
   items: [
-    { id: "r1", n: "01", title: "[REEL 01 — TITLE]", note: "[Category · what it shows]", duration: "[0:00]", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
-    { id: "r2", n: "02", title: "[REEL 02 — TITLE]", note: "[Category · what it shows]", duration: "[0:00]", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
-    { id: "r3", n: "03", title: "[REEL 03 — TITLE]", note: "[Category · what it shows]", duration: "[0:00]", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
-    { id: "r4", n: "04", title: "[REEL 04 — TITLE]", note: "[Category · what it shows]", duration: "[0:00]", seed: 8.9, src: "/Konner - Gaming Reel.mp3" },
+    // Titles are taken from the audio filenames and durations measured from the
+    // files themselves — both are easy to override with Konner's own wording.
+    { id: "r1", n: "01", title: "Commercial", note: "[Category · what it shows]", duration: "0:53", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
+    { id: "r2", n: "02", title: "Documentary", note: "[Category · what it shows]", duration: "0:51", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
+    { id: "r3", n: "03", title: "Audiobook", note: "[Category · what it shows]", duration: "2:04", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
+    { id: "r4", n: "04", title: "Gaming", note: "[Category · what it shows]", duration: "2:06", seed: 8.9, src: "/Konner_Cabena_Gaming.mp3" },
   ] satisfies Reel[],
 } as const;
 

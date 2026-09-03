@@ -1,4 +1,6 @@
-import { about, phClass } from "@/lib/content";
+import Image from "next/image";
+import { about, isPlaceholder, phClass } from "@/lib/content";
+import { SITE } from "@/lib/site";
 import s from "./About.module.scss";
 
 function ExternalIcon() {
@@ -14,7 +16,19 @@ export default function About() {
   return (
     <section id="about" className={s.section} aria-labelledby="about-title">
       <div className={s.photo}>
-        <span className={phClass(about.photo)}>{about.photo}</span>
+        {isPlaceholder(about.photo) ? (
+          <span className={phClass(about.photo)}>{about.photo}</span>
+        ) : (
+          <div className={s.frame}>
+            <Image
+              src={about.photo}
+              alt={`${SITE.name} in the studio`}
+              fill
+              sizes="(max-width: 940px) 90vw, 45vw"
+              className={s.img}
+            />
+          </div>
+        )}
       </div>
 
       <div className={s.copy}>

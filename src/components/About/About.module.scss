@@ -22,6 +22,20 @@
   text-align: center;
 }
 
+// Matches the hero: the print sits within the recess so the pressed shadow
+// still reads as a frame around it.
+.frame {
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.img {
+  object-fit: cover;
+}
+
 .copy {
   display: flex;
   flex-direction: column;

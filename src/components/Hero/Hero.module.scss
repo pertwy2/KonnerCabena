@@ -96,6 +96,20 @@
   text-align: center;
 }
 
+// The print sits within the recess, leaving the pressed shadow visible as a
+// border. Filling the whole panel would bury the shadow and flatten it.
+.frame {
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.img {
+  object-fit: cover;
+}
+
 @include at($bp-wide) {
   .hero {
     padding-left: 40px;
