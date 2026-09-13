@@ -72,6 +72,23 @@ To add or replace a photo: put the original in `assets/images/`, run
 extension (`photo: "KonnerHero"`). Commit `public/images/` and the manifest.
 Unchanged originals are skipped, and variants of replaced ones are deleted.
 
+### Client logos
+
+Logos for the "Worked with" strip go in **`assets/images/logos/`** and follow
+the same flow, with settings suited to logos: smaller widths, edges trimmed so
+transparent padding can't throw off their size, and a PNG fallback instead of
+JPEG so transparency survives. Add one to `workedWith.brands` in `content.ts`:
+
+```ts
+{ name: "BBC", logo: "logos/bbc", scale: 0.75 },
+```
+
+`scale` balances them by eye — a dense block logo looks bigger than a
+fine-lined one at the same height, so heavy logos take a lower scale. A logo
+must have a genuinely transparent background: `assets/logo-originals/` keeps
+the BBC file as supplied, whose "transparent" checkerboard was painted into
+the pixels and had to be removed.
+
 ### Serving images from AWS
 
 Every variant's filename carries a hash of its original

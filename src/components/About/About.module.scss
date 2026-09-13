@@ -108,6 +108,57 @@ a.chip {
   }
 }
 
+// ---- represented by ------------------------------------------------
+.agents {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 32px;
+}
+
+.agent {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.agentName {
+  font-family: var(--font-display), "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: $ink;
+}
+
+a.agentName {
+  text-decoration: underline;
+  text-decoration-color: rgba($coral, 0.55);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: $ink;
+    text-decoration-color: $coral;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $coral;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+}
+
+.agentKind {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $teal-ink;
+}
+
 @include at($bp-wide) {
   .section {
     gap: 52px;

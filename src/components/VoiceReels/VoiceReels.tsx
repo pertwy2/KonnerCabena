@@ -121,7 +121,6 @@ export default function VoiceReels() {
 
               <div className={s.meta}>
                 <span className={s.led} />
-                <span className={s.n}>{r.n}</span>
                 <span className={s.title}>{r.title}</span>
               </div>
 

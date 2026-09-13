@@ -19,25 +19,6 @@ export const hero = {
   photo: "KonnerHero",
 } as const;
 
-/**
- * Representation and past clients — a slim band under the hero rather than a
- * full section. `href: null` renders a name without a link.
- */
-export const affiliations = {
-  representedBy: {
-    label: "Represented by",
-    agents: [
-      { name: "SN Voices", kind: "Voice", href: "https://snvoices.com/gentlemen/konner-cabena/" },
-      { name: "Bazan", kind: "Acting", href: null },
-    ] as { name: string; kind: string; href: string | null }[],
-  },
-  workedWith: {
-    label: "Worked with",
-    /** Add names as they come; the group hides itself while the list is empty. */
-    brands: ["BBC", "Lightfader", "Sysdig"] as string[],
-  },
-};
-
 export const about = {
   heading: "About",
   photo: "KonnerAbout",
@@ -51,11 +32,32 @@ export const about = {
     { label: "Spotlight", href: "https://app.spotlight.com/1018-3499-6502" },
     { label: "SN Voices", href: "https://snvoices.com/gentlemen/konner-cabena/" },
   ] as { label: string; href: string | null }[],
+  representedByLabel: "Represented by",
+  /** `href: null` renders the agency's name without a link. */
+  agents: [
+    { name: "SN Voices", kind: "Voice", href: "https://snvoices.com/gentlemen/konner-cabena/" },
+    { name: "Bazan", kind: "Acting", href: null },
+  ] as { name: string; kind: string; href: string | null }[],
 } as const;
+
+/**
+ * Past clients, shown as a strip of logos under the About section.
+ *
+ * `logo` names an image in assets/images/ (run `npm run images` after adding
+ * one). `scale` balances them optically: a dense block logo reads larger than
+ * a fine-lined one at the same height, so the heavy ones go smaller.
+ */
+export const workedWith = {
+  label: "Worked with",
+  brands: [
+    { name: "BBC", logo: "logos/bbc", scale: 0.75 },
+    { name: "Lightfader", logo: "logos/lightfader", scale: 1.3 },
+    { name: "Sysdig", logo: "logos/sysdig", scale: 0.85 },
+  ] as { name: string; logo: string; scale: number }[],
+};
 
 export type Reel = {
   id: string;
-  n: string;
   title: string;
   duration: string;
   /** Seeds the deterministic waveform so each strip looks distinct. */
@@ -69,10 +71,10 @@ export const reels = {
   items: [
     // Titles are taken from the audio filenames and durations measured from the
     // files themselves — both are easy to override with Konner's own wording.
-    { id: "r1", n: "01", title: "Commercial", duration: "0:53", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
-    { id: "r2", n: "02", title: "Documentary", duration: "0:51", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
-    { id: "r3", n: "03", title: "Audiobook", duration: "2:04", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
-    { id: "r4", n: "04", title: "Gaming", duration: "2:06", seed: 8.9, src: "/Konner_Cabena_Gaming.mp3" },
+    { id: "r1", title: "Commercial", duration: "0:53", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
+    { id: "r2", title: "Documentary", duration: "0:51", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
+    { id: "r3", title: "Audiobook", duration: "2:04", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
+    { id: "r4", title: "Gaming", duration: "2:06", seed: 8.9, src: "/Konner_Cabena_Gaming.mp3" },
   ] satisfies Reel[],
 } as const;
 

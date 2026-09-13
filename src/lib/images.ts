@@ -17,7 +17,8 @@ export type GeneratedImage = {
   widths: number[];
   hash: string;
   formats: { ext: string; mime: string }[];
-  placeholder: string;
+  /** Blurred inline preview; null for logos, where a blur would look like a smudge. */
+  placeholder: string | null;
 };
 
 const images = manifest as Record<string, GeneratedImage>;

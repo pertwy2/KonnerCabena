@@ -148,14 +148,21 @@
   .intro {
     font-size: 17px;
   }
+  // Side by side at equal widths rather than stacked — tighter padding and
+  // text keep both labels on one line down to very narrow phones.
   .ctas {
-    flex-direction: column;
     width: 100%;
+    flex-wrap: nowrap;
+    gap: 12px;
   }
   .primary,
   .secondary {
-    width: 100%;
+    flex: 1 1 0;
     justify-content: center;
+    white-space: nowrap;
+    gap: 8px;
+    padding: 16px 14px;
+    font-size: 15px;
   }
 }
 
@@ -166,5 +173,27 @@
   }
   .name {
     font-size: 42px;
+  }
+  .ctas {
+    gap: 8px;
+  }
+  .primary,
+  .secondary {
+    gap: 6px;
+    padding: 14px 8px;
+    font-size: 14px;
+  }
+}
+
+// Measured: side by side fits down to 280px (the Galaxy Fold's folded
+// screen). Only below that would the labels overflow, so stack there.
+@media (max-width: 279.98px) {
+  .ctas {
+    flex-direction: column;
+  }
+  .primary,
+  .secondary {
+    flex: none;
+    width: 100%;
   }
 }

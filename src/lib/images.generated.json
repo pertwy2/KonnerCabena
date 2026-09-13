@@ -10,7 +10,7 @@
       960,
       1200
     ],
-    "hash": "df0ca9ce",
+    "hash": "8aa8a3e9",
     "formats": [
       {
         "ext": "avif",
@@ -38,7 +38,7 @@
       960,
       1200
     ],
-    "hash": "4518d0ba",
+    "hash": "852b1761",
     "formats": [
       {
         "ext": "avif",
@@ -54,5 +54,86 @@
       }
     ],
     "placeholder": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAwBQCdASoUAB4APu1krE+ppSQiMBgIATAdiWcAwCgyyE9tZmHlFrnA6TURYhpJ7DLQAAD+9DLcUEkwVAoV9c6bWBzVlcaAAcKTkODPRpwiU1gyozOXQCu6euRS/YoodPc6eT6TNH0ynyYAAAA="
+  },
+  "logos/bbc": {
+    "width": 697,
+    "height": 199,
+    "widths": [
+      120,
+      180,
+      240,
+      360,
+      480
+    ],
+    "hash": "324e41b9",
+    "formats": [
+      {
+        "ext": "avif",
+        "mime": "image/avif"
+      },
+      {
+        "ext": "webp",
+        "mime": "image/webp"
+      },
+      {
+        "ext": "png",
+        "mime": "image/png"
+      }
+    ],
+    "placeholder": null
+  },
+  "logos/lightfader": {
+    "width": 504,
+    "height": 212,
+    "widths": [
+      120,
+      180,
+      240,
+      360,
+      480
+    ],
+    "hash": "7782f6a9",
+    "formats": [
+      {
+        "ext": "avif",
+        "mime": "image/avif"
+      },
+      {
+        "ext": "webp",
+        "mime": "image/webp"
+      },
+      {
+        "ext": "png",
+        "mime": "image/png"
+      }
+    ],
+    "placeholder": null
+  },
+  "logos/sysdig": {
+    "width": 2000,
+    "height": 604,
+    "widths": [
+      120,
+      180,
+      240,
+      360,
+      480
+    ],
+    "hash": "36e182bf",
+    "formats": [
+      {
+        "ext": "avif",
+        "mime": "image/avif"
+      },
+      {
+        "ext": "webp",
+        "mime": "image/webp"
+      },
+      {
+        "ext": "png",
+        "mime": "image/png"
+      }
+    ],
+    "placeholder": null
   }
 }

@@ -191,3 +191,11 @@
     padding-inline: 16px;
   }
 }
+
+// Below 352px the CTA crowds the logo. The hero's own booking button is on
+// screen at the top of the page, so nothing is lost.
+@media (max-width: 351.98px) {
+  .cta {
+    display: none;
+  }
+}

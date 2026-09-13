@@ -49,11 +49,11 @@ export default function ResponsiveImage({ name, alt, sizes, priority = false, cl
         decoding={priority ? "auto" : "async"}
         // A ~20px blurred copy of the photo, inlined: the frame shows its
         // colours while the real file loads instead of sitting empty.
-        style={{
-          backgroundImage: `url("${image.placeholder}")`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        style={
+          image.placeholder
+            ? { backgroundImage: `url("${image.placeholder}")`, backgroundSize: "cover", backgroundPosition: "center" }
+            : undefined
+        }
       />
     </picture>
   );

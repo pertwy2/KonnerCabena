@@ -78,6 +78,24 @@ export default function About() {
             ),
           )}
         </div>
+
+        <p className={s.credLabel} id="represented-by">
+          {about.representedByLabel}
+        </p>
+        <ul className={s.agents} aria-labelledby="represented-by">
+          {about.agents.map((a) => (
+            <li key={a.name} className={s.agent}>
+              {a.href ? (
+                <a href={a.href} className={s.agentName} target="_blank" rel="noopener noreferrer">
+                  {a.name}
+                </a>
+              ) : (
+                <span className={s.agentName}>{a.name}</span>
+              )}{" "}
+              <span className={s.agentKind}>{a.kind}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
