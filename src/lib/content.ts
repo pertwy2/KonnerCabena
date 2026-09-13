@@ -14,9 +14,9 @@ export const hero = {
   name: "Konner Cabena",
   /** Second half of the <h1> — together they carry the target search phrase. */
   role: "Voice Actor",
-  tagline: "Young in Tone, Rich in Range, Warm at Heart",
   intro: "Commercial, narration, character and animation. In your studio or mine.",
-  photo: "/KonnerHero.jpg",
+  /** Name of the original in assets/images/, without its extension. */
+  photo: "KonnerHero",
 } as const;
 
 /**
@@ -40,7 +40,7 @@ export const affiliations = {
 
 export const about = {
   heading: "About",
-  photo: "/KonnerAbout.jpg",
+  photo: "KonnerAbout",
   body: [
     "[BIO PARAGRAPH ONE — who Konner is, the work he's known for, how he sounds. Two or three sentences.]",
     "[BIO PARAGRAPH TWO — training, studio and kit, direction and turnaround. Two or three sentences.]",

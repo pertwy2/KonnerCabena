@@ -14,6 +14,7 @@ material illusion breaks.
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # static export -> ./out
+npm run images   # regenerate responsive photo variants (after adding/changing a photo)
 npm run og       # regenerate public/og.png (only after changing the logo)
 ```
 
@@ -44,15 +45,49 @@ styling disappears on its own.
 
 Still to supply:
 
-- Bio paragraphs, and the two photos (`public/`, then swap the placeholder divs)
-- Reel titles, categories and durations — plus the audio files themselves
-- Credential links (IMDb, Spotlight, agent) and social URLs in `src/lib/site.ts`
+- Bio paragraphs
 - The show reel embed URL, and the three testimonials
 - A real contact email
 
-**Audio:** drop MP3s in `public/reels/` and set each reel's `src` (e.g.
-`"/reels/commercial.mp3"`). The players are already wired — until a `src`
-exists the buttons drive the visual state only, and say so to screen readers.
+**Audio:** MP3s live in `public/` and each reel's `src` points at one (e.g.
+`"/Konner_Cabena_Commercial.mp3"`).
+
+## Photos
+
+Photos are never served at their original size. Originals live in
+**`assets/images/`**, which isn't deployed; `npm run images` turns each one
+into AVIF, WebP and JPEG at six widths (360–1200px) in `public/images/`, and
+records them in `src/lib/images.generated.json`.
+
+The page renders them through `<ResponsiveImage>`, a `<picture>` element: the
+browser takes the first format it supports and the smallest width that covers
+the slot at its pixel density. What "the slot" is comes from the `sizes`
+string beside each photo in `Hero.tsx` and `About.tsx`, which mirrors that
+section's CSS breakpoints — **if you change a photo frame's padding, gap or
+max-width, update its `sizes` to match**, or phones will quietly download
+larger files than they need.
+
+To add or replace a photo: put the original in `assets/images/`, run
+`npm run images`, and reference it in `content.ts` by filename without the
+extension (`photo: "KonnerHero"`). Commit `public/images/` and the manifest.
+Unchanged originals are skipped, and variants of replaced ones are deleted.
+
+### Serving images from AWS
+
+Every variant's filename carries a hash of its original
+(`KonnerHero-960.4518d0ba.avif`), so a replaced photo always gets new URLs.
+That makes them safe to cache forever. Upload the folder with its paths
+intact, then point the build at it:
+
+```bash
+aws s3 sync public/images s3://YOUR-BUCKET/images --cache-control "public, max-age=31536000, immutable"
+```
+
+```bash
+NEXT_PUBLIC_IMAGE_BASE_URL=https://YOUR-DISTRIBUTION.cloudfront.net npm run build
+```
+
+With the variable unset, images are served from the site's own `/images/`.
 
 ## SEO
 
@@ -62,8 +97,7 @@ Handled in `src/app/layout.tsx` (metadata, Open Graph, Twitter card, JSON-LD
 The `<h1>` is "Konner Cabena Voice Actor" — the name as the large headline,
 the role beneath it. The name otherwise appears only inside the logo PNG,
 which no crawler can read, so without it the page would have no crawlable
-instance of the target phrase in its most important heading. The tagline
-sits below as a paragraph.
+instance of the target phrase in its most important heading.
 
 Social and credential links are only emitted into the schema's `sameAs` array once they hold
 real URLs, so the structured data never ships placeholder junk.

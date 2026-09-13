@@ -1,7 +1,21 @@
-import Image from "next/image";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import { about, isPlaceholder, phClass } from "@/lib/content";
 import { SITE } from "@/lib/site";
 import s from "./About.module.scss";
+
+/**
+ * The rendered width of the photo, mirroring About.module.scss: the recess is
+ * a grid column (or up to 380px once stacked) minus its 22px padding each
+ * side. Keep in step with the padding, gap and max-width there.
+ *
+ *   ≤411px   16px page padding          → 100vw − 76px
+ *   ≤940px   stacked, capped at 380px   → 336px
+ *   ≤1180px  two columns, 40px padding, 52px gap → 50vw − 110px
+ *   wider    capped 1180px container    → 452px
+ */
+const PHOTO_SIZES =
+  "(max-width: 411px) calc(100vw - 76px), (max-width: 940px) 336px, " +
+  "(max-width: 1180px) calc(50vw - 110px), 452px";
 
 function ExternalIcon() {
   return (
@@ -20,11 +34,10 @@ export default function About() {
           <span className={phClass(about.photo)}>{about.photo}</span>
         ) : (
           <div className={s.frame}>
-            <Image
-              src={about.photo}
+            <ResponsiveImage
+              name={about.photo}
               alt={`${SITE.name} in the studio`}
-              fill
-              sizes="(max-width: 940px) 90vw, 45vw"
+              sizes={PHOTO_SIZES}
               className={s.img}
             />
           </div>

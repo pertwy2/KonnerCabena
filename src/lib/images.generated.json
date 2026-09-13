@@ -1,0 +1,58 @@
+{
+  "KonnerAbout": {
+    "width": 3308,
+    "height": 4962,
+    "widths": [
+      360,
+      480,
+      640,
+      800,
+      960,
+      1200
+    ],
+    "hash": "df0ca9ce",
+    "formats": [
+      {
+        "ext": "avif",
+        "mime": "image/avif"
+      },
+      {
+        "ext": "webp",
+        "mime": "image/webp"
+      },
+      {
+        "ext": "jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "placeholder": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADwBQCdASoUAB4APuFUpU2opCOiN/qoARAcCUAVhmq4aN0QmPJAJnOHzVTdsZmQmZlZMIxySACsAAD+y1qp9OpzYeIG+pWx+12rIGRF2I23410WNTD0QkC6Us8ZugZB3Kn0gAnwx7LAAA=="
+  },
+  "KonnerHero": {
+    "width": 1365,
+    "height": 2048,
+    "widths": [
+      360,
+      480,
+      640,
+      800,
+      960,
+      1200
+    ],
+    "hash": "4518d0ba",
+    "formats": [
+      {
+        "ext": "avif",
+        "mime": "image/avif"
+      },
+      {
+        "ext": "webp",
+        "mime": "image/webp"
+      },
+      {
+        "ext": "jpg",
+        "mime": "image/jpeg"
+      }
+    ],
+    "placeholder": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAwBQCdASoUAB4APu1krE+ppSQiMBgIATAdiWcAwCgyyE9tZmHlFrnA6TURYhpJ7DLQAAD+9DLcUEkwVAoV9c6bWBzVlcaAAcKTkODPRpwiU1gyozOXQCu6euRS/YoodPc6eT6TNH0ynyYAAAA="
+  }
+}
