@@ -12,12 +12,6 @@ const icons: Record<string, React.ReactNode> = {
     </>
   ),
   LinkedIn: <path d="M4.5 9.5v10M4.5 5.2v.02M10 19.5v-10M10 13.2c0-2 1.4-3.4 3.2-3.4S16.5 11 16.5 13v6.5" />,
-  YouTube: (
-    <>
-      <rect x="2.5" y="5.5" width="19" height="13" rx="4" />
-      <path d="M10.2 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none" />
-    </>
-  ),
 };
 
 export default function Contact() {

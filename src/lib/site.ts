@@ -45,9 +45,8 @@ export const FORM_ENDPOINT = "";
  * the JSON-LD `sameAs` array.
  */
 export const LINKS: { label: string; href: string | null }[] = [
-  { label: "Instagram", href: null },
-  { label: "LinkedIn", href: null },
-  { label: "YouTube", href: null },
+  { label: "Instagram", href: "https://www.instagram.com/konner_bc/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/konner-cabena-a2b539390/" },
 ];
 
 /**

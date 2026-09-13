@@ -1,4 +1,4 @@
-export type Bar = { h: number; d: string };
+export type Bar = { h: number };
 
 /**
  * Deterministic pseudo-waveform.
@@ -20,10 +20,7 @@ export function wave(seed: number, n: number): Bar[] {
     );
     // Expand the contrast so peaks and troughs are clearly distinct.
     const v = Math.pow(raw, 1.35) * 1.5;
-    out.push({
-      h: Math.max(7, Math.min(100, Math.round(env * v * 100))),
-      d: `${(i * 0.032).toFixed(3)}s`,
-    });
+    out.push({ h: Math.max(7, Math.min(100, Math.round(env * v * 100))) });
   }
   return out;
 }

@@ -1,4 +1,5 @@
 import About from "@/components/About/About";
+import Affiliations from "@/components/Affiliations/Affiliations";
 import Contact from "@/components/Contact/Contact";
 import Hero from "@/components/Hero/Hero";
 import Nav from "@/components/Nav/Nav";
@@ -12,6 +13,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <Affiliations />
         <VoiceReels />
         <About />
         <ShowReel />

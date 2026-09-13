@@ -19,23 +19,27 @@
 }
 
 .channel {
-  @include raised;
+  @include panel;
+  --progress: 0;
   border-radius: 22px;
-  padding: 24px 30px;
+  padding: 22px 30px;
   display: flex;
   align-items: center;
   gap: 28px;
   transition:
     box-shadow 380ms $spring,
-    transform 380ms $spring;
+    transform 380ms $spring,
+    background 380ms ease;
 
   &:hover {
     transform: translateY(-2px);
   }
 }
 
-// Pressing a channel sinks it, like a console key that stays down.
+// Pressing a channel sinks it back into the surface, like a console key that
+// stays down.
 .isPlaying {
+  background: $surface;
   transform: translateY(0);
   @include pressed(6px, 14px);
 
@@ -44,21 +48,19 @@
   }
 
   .led {
-    background: var(--accent);
+    background: $coral;
     box-shadow:
-      0 0 10px var(--accent),
-      0 0 3px var(--accent);
+      0 0 10px $coral,
+      0 0 3px $coral;
   }
 
-  .bar {
-    background: var(--accent);
-    animation: pulse 1000ms ease-in-out infinite;
+  .key {
+    background: $coral;
   }
 }
 
 .key {
-  @include key;
-  @include raised;
+  @include accent-key($teal);
   flex: 0 0 auto;
   width: 60px;
   height: 60px;
@@ -66,21 +68,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $ink;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+  }
 }
 
 .meta {
-  flex: 0 0 190px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.tag {
+  flex: 0 0 170px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+  min-width: 0;
 }
 
 .led {
@@ -103,47 +104,48 @@
 }
 
 .title {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
-  font-style: normal;
+  white-space: nowrap;
 }
 
-.note {
-  font-size: 13px;
+.wave {
+  position: relative;
+  flex: 1 1 auto;
+  height: 46px;
 }
 
 .bars {
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 46px;
-  flex: 1 1 auto;
+  height: 100%;
 }
 
 .bar {
   flex: 1;
   min-width: 2px;
   border-radius: 2px;
-  background: #c9bfb3;
-  transform-origin: center;
-  transition: background $ease;
+  background: #cbc1b5;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scaleY(0.3);
-  }
-  50% {
-    transform: scaleY(1);
+// The red copy, clipped from the right to the playback position.
+.fill {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 calc((1 - var(--progress)) * 100%) 0 0);
+
+  .bar {
+    background: $coral;
   }
 }
 
 .dur {
   flex: 0 0 auto;
   font-size: 13px;
+  color: $muted;
   font-variant-numeric: tabular-nums;
-  min-width: 52px;
+  min-width: 44px;
   text-align: right;
 }
 
@@ -158,12 +160,11 @@
   .meta {
     flex: 1 1 auto;
   }
-  .dur {
-    order: 4;
-  }
-  .bars {
+  .wave {
     flex: 1 1 100%;
     order: 5;
+  }
+  .bars {
     gap: 2px;
   }
 }

@@ -4,20 +4,20 @@ import { SITE } from "@/lib/site";
 import s from "./Hero.module.scss";
 
 /**
- * The <h1> deliberately opens with "Konner Cabena · Voice Actor" before the
- * tagline: the name otherwise exists only inside the logo PNG, which no
- * crawler can read. The name line is styled small so the tagline still
- * dominates visually.
+ * The name is the headline. People scroll past the hero quickly and don't
+ * come back, so it has to register on the way through — and "Konner Cabena
+ * Voice Actor" in the <h1> is also the phrase the page is built to rank for.
  */
 export default function Hero() {
   return (
     <section className={s.hero} aria-labelledby="hero-title">
       <div className={s.copy}>
         <h1 id="hero-title" className={s.title}>
-          <span className={s.name}>{hero.name}</span>
-          <span className={s.tagline}>{hero.tagline}</span>
+          <span className={s.name}>{hero.name}</span>{" "}
+          <span className={s.role}>{hero.role}</span>
         </h1>
 
+        <p className={s.tagline}>{hero.tagline}</p>
         <p className={s.intro}>{hero.intro}</p>
 
         <div className={s.ctas}>

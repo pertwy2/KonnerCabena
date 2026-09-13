@@ -39,7 +39,9 @@ export default function ContactForm() {
     }
 
     if (hasEmail) {
-      const subject = `Voiceover enquiry — ${data.get("projectType") ?? ""}`;
+      // Free text now, so it may be blank — don't leave a dangling dash.
+      const project = String(data.get("projectType") ?? "").trim();
+      const subject = project ? `Voiceover enquiry — ${project}` : "Voiceover enquiry";
       const body = [
         `Name: ${data.get("name") ?? ""}`,
         `Email: ${data.get("email") ?? ""}`,
@@ -68,11 +70,13 @@ export default function ContactForm() {
 
       <div className={s.field}>
         <label htmlFor="f-type">Project type</label>
-        <select id="f-type" name="projectType" className={s.input} defaultValue={contact.projectTypes[0]}>
-          {contact.projectTypes.map((t) => (
-            <option key={t}>{t}</option>
-          ))}
-        </select>
+        <input
+          id="f-type"
+          name="projectType"
+          type="text"
+          placeholder="e.g. radio ad, audiobook, game character"
+          className={s.input}
+        />
       </div>
 
       <div className={s.field}>

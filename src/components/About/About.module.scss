@@ -63,7 +63,7 @@
 }
 
 .chip {
-  @include raised;
+  @include panel;
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -76,12 +76,21 @@
   transition:
     box-shadow $ease,
     transform $ease;
+
+  svg {
+    color: $teal-ink;
+    transition: color 200ms ease;
+  }
 }
 
 a.chip {
   &:hover {
     color: $ink;
     transform: translateY(-2px);
+
+    svg {
+      color: $coral-ink;
+    }
   }
 
   &:active {

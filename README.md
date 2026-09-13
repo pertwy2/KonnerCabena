@@ -59,12 +59,13 @@ exists the buttons drive the visual state only, and say so to screen readers.
 Handled in `src/app/layout.tsx` (metadata, Open Graph, Twitter card, JSON-LD
 `Person` schema) plus `src/app/sitemap.ts` and `src/app/robots.ts`.
 
-The `<h1>` deliberately opens with "Konner Cabena · Voice Actor" before the
-tagline. The name otherwise appears only inside the logo PNG, which no
-crawler can read — without that line the page has no crawlable instance of
-the target phrase in its most important heading.
+The `<h1>` is "Konner Cabena Voice Actor" — the name as the large headline,
+the role beneath it. The name otherwise appears only inside the logo PNG,
+which no crawler can read, so without it the page would have no crawlable
+instance of the target phrase in its most important heading. The tagline
+sits below as a paragraph.
 
-Social links are only emitted into the schema's `sameAs` array once they hold
+Social and credential links are only emitted into the schema's `sameAs` array once they hold
 real URLs, so the structured data never ships placeholder junk.
 
 ## Styling

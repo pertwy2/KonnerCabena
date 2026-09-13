@@ -10,14 +10,33 @@
 export const isPlaceholder = (s: string) => s.trimStart().startsWith("[");
 
 export const hero = {
-  /** Small line, first in the <h1>. Carries the target search phrase. */
-  name: "Konner Cabena · Voice Actor",
-  /** The large carved line. */
-  tagline: "The voice that stays in the room.",
-  intro:
-    "Commercial, narration, character and animation work — recorded, directed and delivered clean.",
+  /** The large carved line, and the first half of the <h1>. */
+  name: "Konner Cabena",
+  /** Second half of the <h1> — together they carry the target search phrase. */
+  role: "Voice Actor",
+  tagline: "Young in Tone, Rich in Range, Warm at Heart",
+  intro: "Commercial, narration, character and animation. In your studio or mine.",
   photo: "/KonnerHero.jpg",
 } as const;
+
+/**
+ * Representation and past clients — a slim band under the hero rather than a
+ * full section. `href: null` renders a name without a link.
+ */
+export const affiliations = {
+  representedBy: {
+    label: "Represented by",
+    agents: [
+      { name: "SN Voices", kind: "Voice", href: "https://snvoices.com/gentlemen/konner-cabena/" },
+      { name: "Bazan", kind: "Acting", href: null },
+    ] as { name: string; kind: string; href: string | null }[],
+  },
+  workedWith: {
+    label: "Worked with",
+    /** Add names as they come; the group hides itself while the list is empty. */
+    brands: ["BBC", "Lightfader", "Sysdig"] as string[],
+  },
+};
 
 export const about = {
   heading: "About",
@@ -26,7 +45,7 @@ export const about = {
     "[BIO PARAGRAPH ONE — who Konner is, the work he's known for, how he sounds. Two or three sentences.]",
     "[BIO PARAGRAPH TWO — training, studio and kit, direction and turnaround. Two or three sentences.]",
   ],
-  credentialsLabel: "Credentials",
+  credentialsLabel: "Where to find me",
   credentials: [
     { label: "IMDb", href: "https://www.imdb.com/name/nm14955974/" },
     { label: "Spotlight", href: "https://app.spotlight.com/1018-3499-6502" },
@@ -38,7 +57,6 @@ export type Reel = {
   id: string;
   n: string;
   title: string;
-  note: string;
   duration: string;
   /** Seeds the deterministic waveform so each strip looks distinct. */
   seed: number;
@@ -51,10 +69,10 @@ export const reels = {
   items: [
     // Titles are taken from the audio filenames and durations measured from the
     // files themselves — both are easy to override with Konner's own wording.
-    { id: "r1", n: "01", title: "Commercial", note: "[Category · what it shows]", duration: "0:53", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
-    { id: "r2", n: "02", title: "Documentary", note: "[Category · what it shows]", duration: "0:51", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
-    { id: "r3", n: "03", title: "Audiobook", note: "[Category · what it shows]", duration: "2:04", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
-    { id: "r4", n: "04", title: "Gaming", note: "[Category · what it shows]", duration: "2:06", seed: 8.9, src: "/Konner_Cabena_Gaming.mp3" },
+    { id: "r1", n: "01", title: "Commercial", duration: "0:53", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
+    { id: "r2", n: "02", title: "Documentary", duration: "0:51", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
+    { id: "r3", n: "03", title: "Audiobook", duration: "2:04", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
+    { id: "r4", n: "04", title: "Gaming", duration: "2:06", seed: 8.9, src: "/Konner_Cabena_Gaming.mp3" },
   ] satisfies Reel[],
 } as const;
 
@@ -80,13 +98,6 @@ export const contact = {
   blurb:
     "Send a script, a brief, or just a rough idea of what you need. Every enquiry gets a real reply.",
   email: "[EMAIL ADDRESS]",
-  projectTypes: [
-    "Commercial",
-    "Narration",
-    "Character / Animation",
-    "Video game",
-    "Something else",
-  ],
 } as const;
 
 export const nav = [
