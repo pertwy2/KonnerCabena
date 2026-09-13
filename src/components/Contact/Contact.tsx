@@ -34,7 +34,6 @@ export default function Contact() {
           )}
         </div>
 
-        <p className={s.elsewhereLabel}>Elsewhere</p>
         <div className={s.socials}>
           {LINKS.map((l) => {
             const glyph = (

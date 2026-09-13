@@ -46,14 +46,10 @@
   font-weight: 600;
 }
 
-.elsewhereLabel {
-  @include eyebrow;
-  margin: 14px 0 0;
-}
-
 .socials {
   display: flex;
   gap: 14px;
+  margin-top: 8px; // a little clear of the email panel's shadow
 }
 
 .social {
