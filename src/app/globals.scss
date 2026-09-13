@@ -8,6 +8,36 @@
 
 :root {
   --accent: #{$coral};
+
+  // Nav geometry: the two endpoints the header eases between as the page
+  // scrolls. They live here rather than in the Nav module because the page
+  // needs them too — the nav spacer reserves --nav-max, and section anchors
+  // clear --nav-min.
+  --logo-max: 150px;
+  --logo-min: 60px; // the smallest size at which the name in the logo reads
+  --nav-pad-max: 30px;
+  --nav-pad-min: 10px;
+
+  @include at($bp-wide) {
+    --logo-max: 128px;
+  }
+
+  @include at($bp-phone) {
+    --logo-max: 64px;
+    --logo-min: 44px;
+    --nav-pad-max: 16px;
+    --nav-pad-min: 8px;
+  }
+
+  // The bar's content row is never shorter than the 44px CTA.
+  --nav-max: calc(max(var(--logo-max), 44px) + 2 * var(--nav-pad-max));
+  --nav-min: calc(max(var(--logo-min), 44px) + 2 * var(--nav-pad-min));
+}
+
+// Anchor jumps land with the section heading clear of the compact nav bar,
+// plus breathing room, instead of hidden underneath it.
+section[id] {
+  scroll-margin-top: calc(var(--nav-min) + 32px);
 }
 
 html {
@@ -23,7 +53,7 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   // `clip`, not `hidden`: `overflow: hidden` turns body into a scroll
-  // container, which silently breaks `position: sticky` on the nav.
+  // container, which breaks `position: sticky` for anything that uses it.
   overflow-x: clip;
 }
 
@@ -53,7 +83,7 @@ img {
   border: 0;
 }
 
-// The waveforms pulse continuously; honour a stated preference for stillness.
+// Honour a stated preference for stillness: no smooth scrolling, no springs.
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

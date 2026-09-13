@@ -1,23 +1,32 @@
 @use "../../styles/theme" as *;
 
+// Holds the header's place in the page at its full height. It never changes
+// size, so the header shrinking can't move anything below it. The endpoint
+// variables are on :root — see globals.scss.
+.spacer {
+  height: var(--nav-max);
+}
+
 .nav {
-  position: sticky;
-  top: 0;
+  --p: 0;
+  // Everything interpolates from the single --p that Nav.tsx writes.
+  --logo: calc(var(--logo-max) - (var(--logo-max) - var(--logo-min)) * var(--p));
+  --pad: calc(var(--nav-pad-max) - (var(--nav-pad-max) - var(--nav-pad-min)) * var(--p));
+
+  position: fixed;
+  inset: 0 0 auto;
   z-index: 40;
   background: color-mix(in srgb, #{$surface} 88%, transparent);
   backdrop-filter: blur(14px);
-  transition: box-shadow 420ms $spring;
-  --logo-height: 150px;
-}
-
-.stuck {
-  box-shadow: 0 12px 28px rgba(168, 154, 140, 0.28);
+  // Fades in with the shrink rather than switching on at a threshold.
+  // Interpolated as a string so Sass doesn't try to evaluate rgba() itself.
+  box-shadow: #{"0 12px 28px rgba(168, 154, 140, calc(0.3 * var(--p)))"};
 }
 
 .inner {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 30px 56px;
+  padding: var(--pad) 56px;
   display: grid;
   // minmax(0, …) forces the side columns to stay equal, so the logo is
   // optically centred at every width. Plain `1fr` lets the wider column
@@ -25,12 +34,6 @@
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 28px;
-  transition: padding 420ms $spring;
-
-  .stuck & {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
 }
 
 .group {
@@ -64,9 +67,9 @@
 }
 
 .logoLink {
+  position: relative;
   justify-self: center;
   display: block;
-  cursor: pointer;
   border-radius: 12px;
   transition: transform 180ms $spring;
 
@@ -85,22 +88,62 @@
 }
 
 .logo {
-  height: var(--logo-height);
   display: block;
+  height: var(--logo);
 
   img {
     height: 100%;
     width: auto;
     display: block;
-    filter: drop-shadow(9px 12px 16px rgba(140, 124, 110, 0.38));
+    // The shadow tightens as the logo shrinks, so it keeps the same apparent
+    // lift at every size.
+    filter: drop-shadow(
+      calc(9px - 7px * var(--p)) calc(12px - 9px * var(--p)) calc(16px - 12px * var(--p))
+        rgba(140, 124, 110, 0.36)
+    );
   }
 }
 
+// A small tab hanging from the bottom of the compact bar, directly under the
+// logo. It makes the logo's second job visible without relying on a hover
+// tooltip, which touch screens never show. Anchored to the bar's bottom edge:
+// the logo's bottom plus the bar's current bottom padding.
+.topHint {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--pad));
+  translate: -50% calc(-6px + 6px * var(--p));
+  opacity: clamp(0, (var(--p) - 0.6) * 2.5, 1);
+  pointer-events: none;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px 6px;
+  border-radius: 0 0 10px 10px;
+  background: color-mix(in srgb, #{$surface} 94%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 14px rgba(168, 154, 140, 0.28);
+
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: $teal-ink;
+  transition: color 200ms ease;
+
+  .logoLink:hover & {
+    color: $coral-ink;
+  }
+}
+
+.nav[data-compact] .topHint {
+  pointer-events: auto;
+}
+
 .cta {
-  @include key;
-  @include raised;
-  background: $coral;
-  color: #23201c;
+  @include accent-key($coral);
   font-weight: 600;
   font-size: 14px;
   margin-left: 12px;
@@ -108,20 +151,11 @@
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
-
-  &:hover {
-    color: #23201c;
-    box-shadow:
-      -10px -10px 24px $hl,
-      10px 10px 24px $sd,
-      0 0 26px rgba(251, 104, 104, 0.3);
-  }
 }
 
 @include at($bp-wide) {
   .inner {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-inline: 40px;
   }
   .link {
     padding: 14px 11px;
@@ -142,13 +176,8 @@
 
 @include at($bp-phone) {
   .inner {
-    padding: 18px 22px;
+    padding-inline: 22px;
     gap: 10px;
-
-    .stuck & {
-      padding-top: 9px;
-      padding-bottom: 9px;
-    }
   }
   .cta {
     padding: 12px 16px;
@@ -159,7 +188,6 @@
 
 @include at($bp-narrow) {
   .inner {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-inline: 16px;
   }
 }

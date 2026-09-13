@@ -6,84 +6,97 @@ import { nav } from "@/lib/content";
 import { SITE } from "@/lib/site";
 import s from "./Nav.module.scss";
 
+/** Scroll distance over which the bar eases from full size to compact. */
+const SHRINK_DISTANCE = 140;
+
 /**
- * Sticky nav with a logo that continuously scales from 150px (top) to 34px
- * (scrolled) based on actual scroll position, creating a smooth easing effect.
+ * Centred-logo nav that eases from full size to a compact bar as the page
+ * scrolls.
+ *
+ * The header is `position: fixed`, and a spacer of its full height holds its
+ * place in the page. That separation is what stops the flicker. While the
+ * header sat in the flow, shrinking it moved the content below; the browser's
+ * scroll anchoring then shifted the scroll position to compensate, which grew
+ * the header back — a feedback loop that oscillated whenever the page came to
+ * rest inside the shrink range. Out of the flow, its size can't move anything.
+ *
+ * JS writes a single number, --p (0 at the top, 1 once compact). Every size
+ * is derived from it in CSS, so breakpoints only redefine the endpoints.
  */
 export default function Nav() {
-  const headerRef = useRef<HTMLHeadElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    let rafId: number;
-    const onScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        if (!headerRef.current) return;
+    const header = headerRef.current;
+    if (!header) return;
+    let raf = 0;
 
-        const scrollY = window.scrollY;
-        const maxScroll = 120;
-        const maxHeight = 150;
-        const minHeight = 34;
-
-        // Linear interpolation: as scrollY goes from 0 to 120px,
-        // logo height goes from 150px to 34px
-        const progress = Math.min(scrollY / maxScroll, 1);
-        const height = maxHeight - (maxHeight - minHeight) * progress;
-
-        headerRef.current.style.setProperty("--logo-height", `${height}px`);
-
-        // Update the sticky shadow for visual continuity
-        const isStuck = scrollY > 80;
-        headerRef.current.classList.toggle(s.stuck, isStuck);
-      });
+    const update = () => {
+      raf = 0;
+      const p = Math.min(Math.max(window.scrollY / SHRINK_DISTANCE, 0), 1);
+      header.style.setProperty("--p", p.toFixed(4));
+      // The back-to-top tab only takes clicks once it's visible.
+      header.toggleAttribute("data-compact", p > 0.6);
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // Set initial state
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
 
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(raf);
     };
   }, []);
 
-  const left = nav.slice(0, 3);
-  const right = nav.slice(3);
+  const left = nav.slice(0, 2);
+  const right = nav.slice(2);
 
   return (
-    <header ref={headerRef} className={s.nav}>
-      <div className={s.inner}>
-        <nav className={`${s.group} ${s.left}`} aria-label="Sections">
-          {left.map((l) => (
-            <a key={l.href} href={l.href} className={s.link}>
-              {l.label}
-            </a>
-          ))}
-        </nav>
-
-        <a href="#" className={s.logoLink}>
-          <div className={s.logo}>
-            <Image
-              src="/logo.png"
-              alt={`${SITE.name} — ${SITE.role}`}
-              width={380}
-              height={293}
-              priority
-            />
+    <div className={s.spacer}>
+      <header ref={headerRef} className={s.nav}>
+        <nav className={s.inner} aria-label="Main">
+          <div className={`${s.group} ${s.left}`}>
+            {left.map((l) => (
+              <a key={l.href} href={l.href} className={s.link}>
+                {l.label}
+              </a>
+            ))}
           </div>
-        </a>
 
-        <div className={`${s.group} ${s.right}`}>
-          {right.map((l) => (
-            <a key={l.href} href={l.href} className={s.link}>
-              {l.label}
-            </a>
-          ))}
-          <a href="#contact" className={s.cta}>
-            Book Konner
+          <a href="#" className={s.logoLink} aria-label={`${SITE.name} — back to top`} title="Back to top">
+            <span className={s.logo}>
+              <Image
+                src="/logo.png"
+                alt={`${SITE.name} — ${SITE.role}`}
+                width={380}
+                height={293}
+                priority
+              />
+            </span>
+            <span className={s.topHint} aria-hidden="true">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+              Top
+            </span>
           </a>
-        </div>
-      </div>
-    </header>
+
+          <div className={`${s.group} ${s.right}`}>
+            {right.map((l) => (
+              <a key={l.href} href={l.href} className={s.link}>
+                {l.label}
+              </a>
+            ))}
+            <a href="#contact" className={s.cta}>
+              Book Konner
+            </a>
+          </div>
+        </nav>
+      </header>
+    </div>
   );
 }

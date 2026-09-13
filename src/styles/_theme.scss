@@ -16,9 +16,14 @@ $placeholder: #9c8f81; // unfilled content markers
 $hl: rgba(255, 252, 248, 0.92); // top-left highlight
 $sd: rgba(168, 154, 140, 0.45); // bottom-right shadow — warm, never black
 
+// Raised faces sit a step lighter than the ground: nearer the light, so they
+// catch more of it. On the ground colour alone they read as flat.
+$surface-raised: #f5f1eb;
+
 // ---- accents, from the logo ---------------------------------------
-// Fills, indicators, pressed states and glows ONLY. Never body text:
-// coral on this ground is ~2.3:1 and fails contrast outright.
+// Key fills, indicators and glows. Never body text: coral on this ground
+// is ~2.3:1 and fails contrast outright. Dark ink on any of the three
+// clears 4.5:1, so filled keys always carry #23201c.
 $coral:   #fb6868;
 $teal:    #5a9db5;
 $mustard: #face68;
@@ -54,6 +59,13 @@ $bp-narrow:  420px;
 
 @mixin raised-lg($o: 14px, $b: 34px) {
   box-shadow: (-$o) (-$o) $b rgba(255, 252, 248, 0.95), $o $o $b rgba(168, 154, 140, 0.48);
+}
+
+// A raised panel on the lighter face — the default for anything that sits
+// proud of the surface.
+@mixin panel($o: 8px, $b: 20px) {
+  background: $surface-raised;
+  @include raised($o, $b);
 }
 
 @mixin pressed($o: 5px, $b: 12px) {
@@ -113,6 +125,28 @@ $bp-narrow:  420px;
   &:focus-visible {
     outline: 2px solid var(--accent, #{$coral});
     outline-offset: 4px;
+  }
+}
+
+// A key filled with one of the logo colours, glowing in that colour on hover.
+// :active is restated after :hover — both match while pressing, and the later
+// rule wins, so without this the press would lose its inset shadow.
+@mixin accent-key($fill) {
+  @include key;
+  @include raised;
+  background: $fill;
+  color: #23201c;
+
+  &:hover {
+    color: #23201c;
+    box-shadow:
+      -10px -10px 24px $hl,
+      10px 10px 24px $sd,
+      0 0 24px rgba($fill, 0.38);
+  }
+
+  &:active {
+    @include pressed;
   }
 }
 
