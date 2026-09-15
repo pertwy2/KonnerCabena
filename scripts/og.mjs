@@ -11,7 +11,7 @@ const W = 1200;
 const H = 630;
 const SURFACE = "#e9e3db";
 
-const logo = await sharp("public/logo.png")
+const logo = await sharp("assets/images/brand/logo.png")
   .resize({ width: 640, fit: "inside" })
   .toBuffer();
 

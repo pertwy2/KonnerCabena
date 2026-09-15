@@ -1,13 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef } from "react";
+import ResponsiveImage from "@/components/ResponsiveImage/ResponsiveImage";
 import { nav } from "@/lib/content";
+import { getImage } from "@/lib/images";
 import { SITE } from "@/lib/site";
 import s from "./Nav.module.scss";
 
 /** Scroll distance over which the bar eases from full size to compact. */
 const SHRINK_DISTANCE = 140;
+
+/**
+ * The logo's largest rendered width per breakpoint: its --logo-max height
+ * (globals.scss — keep in step) times its aspect ratio. It only shrinks from
+ * there as the page scrolls, so sizing for the largest state is never soft.
+ */
+const logo = getImage("brand/logo");
+const logoWidth = (height: number) => Math.ceil((height * logo.width) / logo.height);
+const LOGO_SIZES = `(max-width: 680px) ${logoWidth(64)}px, (max-width: 1180px) ${logoWidth(128)}px, ${logoWidth(150)}px`;
 
 /**
  * Centred-logo nav that eases from full size to a compact bar as the page
@@ -68,11 +78,10 @@ export default function Nav() {
 
           <a href="#" className={s.logoLink} aria-label={`${SITE.name} — back to top`} title="Back to top">
             <span className={s.logo}>
-              <Image
-                src="/logo.png"
+              <ResponsiveImage
+                name="brand/logo"
                 alt={`${SITE.name} — ${SITE.role}`}
-                width={380}
-                height={293}
+                sizes={LOGO_SIZES}
                 priority
               />
             </span>

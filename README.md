@@ -52,12 +52,17 @@ Still to supply:
 **Audio:** MP3s live in `public/` and each reel's `src` points at one (e.g.
 `"/Konner_Cabena_Commercial.mp3"`).
 
-## Photos
+## Images
 
-Photos are never served at their original size. Originals live in
+No image is served at its original size. Originals live in
 **`assets/images/`**, which isn't deployed; `npm run images` turns each one
-into AVIF, WebP and JPEG at six widths (360–1200px) in `public/images/`, and
-records them in `src/lib/images.generated.json`.
+into AVIF plus a JPEG fallback (PNG for transparent images) in
+`public/images/`, and records them in `src/lib/images.generated.json`.
+
+Each kind gets only the widths real devices actually pick: photos 480, 800
+and 960px; logos 120, 240 and 360px; the nav logo (`brand/logo`) 200 and
+380px. Every current major browser takes the AVIF — typically 11–39KB for a
+photo and under 10KB for the nav logo — and the rest get the fallback.
 
 The page renders them through `<ResponsiveImage>`, a `<picture>` element: the
 browser takes the first format it supports and the smallest width that covers

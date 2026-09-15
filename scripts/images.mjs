@@ -3,8 +3,9 @@
  *
  *   npm run images
  *
- * For each original it writes AVIF, WebP and a fallback format at several
- * widths into public/images/ (mirroring any subfolder), and records what it
+ * For each original it writes AVIF plus a fallback format (JPEG, or PNG for
+ * transparent images) at a few widths into public/images/ (mirroring any
+ * subfolder), and records what it
  * made in src/lib/images.generated.json, which <ResponsiveImage> reads to
  * build srcset. An image is named by its path without the extension:
  * assets/images/logos/bbc.png is "logos/bbc".
@@ -29,30 +30,47 @@ const OUT_DIR = "public/images";
 const MANIFEST = "src/lib/images.generated.json";
 
 /**
- * Settings per kind of image, chosen by top-level folder.
+ * Settings per kind of image, chosen by top-level folder. Each width set is
+ * only the widths real devices actually pick — measured against the `sizes`
+ * rules on the page, not guessed.
  *
- * Photos render between ~240 and ~480 CSS px, so their widths cover a 1x
- * desktop (480) through a 3x phone (1200). Logos render ~30–40px tall, a few
- * hundred px wide at most even on a 3x screen. Logos are trimmed to their
- * visible edges, so transparent padding in the source can't throw off their
- * size on the page, and get no blurred placeholder.
+ * Photos render 244–482 CSS px. 480 serves 1x screens, 800 tablets, 960
+ * retina laptops and 3x phones. A 3x Pro Max would ask for ~1030px, but 960
+ * is 2.8x there and indistinguishable, so there's no 1200.
+ *
+ * Logos render ~30–50px tall and at most ~280px wide on a 3x phone. They're
+ * trimmed to their visible edges, so transparent padding in the source can't
+ * throw off their size on the page.
+ *
+ * The brand mark (the nav logo) renders up to 195px wide; 380px, its full
+ * source width, covers a 2x screen.
+ *
+ * Photos encode AVIF at quality 50. Graphics use 70: at 50, AVIF visibly
+ * smudges fine lettering like the logo's "VOICE ACTOR", and at these sizes
+ * the extra quality costs a few hundred bytes.
  */
 const PROFILES = {
-  photo: { widths: [360, 480, 640, 800, 960, 1200], trim: false, placeholder: true },
-  logo: { widths: [120, 180, 240, 360, 480], trim: true, placeholder: false },
+  photo: { widths: [480, 800, 960], trim: false, placeholder: true, avifQuality: 50 },
+  logo: { widths: [120, 240, 360], trim: true, placeholder: false, avifQuality: 70 },
+  brand: { widths: [200, 380], trim: false, placeholder: false, avifQuality: 70 },
 };
-const profileFor = (name) => (name.startsWith("logos/") ? PROFILES.logo : PROFILES.photo);
+const profileFor = (name) =>
+  name.startsWith("logos/") ? PROFILES.logo : name.startsWith("brand/") ? PROFILES.brand : PROFILES.photo;
 
-const AVIF = { ext: "avif", mime: "image/avif", encode: (img) => img.avif({ quality: 50, effort: 5 }) };
-const WEBP = { ext: "webp", mime: "image/webp", encode: (img) => img.webp({ quality: 78, effort: 5 }) };
+const avif = (quality) => ({ ext: "avif", mime: "image/avif", encode: (img) => img.avif({ quality, effort: 5 }) });
 const JPG = { ext: "jpg", mime: "image/jpeg", encode: (img) => img.jpeg({ quality: 80, mozjpeg: true }) };
 const PNG = { ext: "png", mime: "image/png", encode: (img) => img.png({ compressionLevel: 9, palette: true }) };
 
-/** Best first — <picture> offers them in this order. JPEG has no transparency, so transparent images fall back to PNG. */
-const formatsFor = (hasAlpha) => [AVIF, WEBP, hasAlpha ? PNG : JPG];
+/**
+ * AVIF first, then a fallback — <picture> offers them in this order. Every
+ * current major browser takes AVIF; the few that don't get the fallback,
+ * which is always correct, just heavier. JPEG has no transparency, so
+ * transparent images fall back to PNG.
+ */
+const formatsFor = (profile, hasAlpha) => [avif(profile.avifQuality), hasAlpha ? PNG : JPG];
 
-/** Changing any encoder setting changes this, and so every hash. */
-const ENCODER_VERSION = "avif50e5-webp78e5-jpg80moz-png9pal";
+/** Changing any encoder setting outside PROFILES changes this, and so every hash. */
+const ENCODER_VERSION = "avif-e5-jpg80moz-png9pal";
 
 const SOURCE_EXT = /\.(jpe?g|png|webp|avif|tiff?)$/i;
 const VARIANT = /^.+-\d+\.[0-9a-f]{8}\.(avif|webp|jpg|png)$/;
@@ -100,7 +118,7 @@ async function main() {
     const { info } = await base.clone().toBuffer({ resolveWithObject: true });
     const { width, height } = info;
     const hasAlpha = (await base.clone().stats()).isOpaque === false;
-    const formats = formatsFor(hasAlpha);
+    const formats = formatsFor(profile, hasAlpha);
 
     const widths = profile.widths.filter((w) => w < width);
     const cap = Math.min(width, profile.widths.at(-1));

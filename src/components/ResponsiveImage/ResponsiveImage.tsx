@@ -17,9 +17,9 @@ type Props = {
 };
 
 /**
- * A <picture> offering AVIF, then WebP, then JPEG, each at every generated
- * width. The browser takes the first format it supports and the width that
- * fits the slot at its pixel density.
+ * A <picture> offering AVIF, then a JPEG (or PNG) fallback, each at every
+ * generated width. The browser takes the first format it supports and the
+ * width that fits the slot at its pixel density.
  *
  * Not next/image: under a static export it has no optimiser to resize with,
  * and it can't emit per-format <source> elements at all.

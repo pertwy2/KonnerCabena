@@ -91,9 +91,12 @@
   display: block;
   height: var(--logo);
 
+  // Height from the variable itself, not 100%: the image sits inside a
+  // <picture>, which has no height for a percentage to resolve against.
   img {
-    height: 100%;
+    height: var(--logo);
     width: auto;
+    max-width: none;
     display: block;
     // The shadow tightens as the logo shrinks, so it keeps the same apparent
     // lift at every size.
