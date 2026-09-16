@@ -16,6 +16,7 @@ npm run dev      # http://localhost:3000
 npm run build    # static export -> ./out
 npm run images   # regenerate responsive photo variants (after adding/changing a photo)
 npm run og       # regenerate public/og.png (only after changing the logo)
+npm run assets:upload  # push images + audio to S3/CloudFront (see Hosting on AWS)
 ```
 
 `npm run build` emits plain HTML to `out/`, which can be served by anything —
@@ -49,8 +50,9 @@ Still to supply:
 - The show reel embed URL, and the three testimonials
 - A real contact email
 
-**Audio:** MP3s live in `public/` and each reel's `src` points at one (e.g.
-`"/Konner_Cabena_Commercial.mp3"`).
+**Audio:** MP3s live in `public/audio/` and each reel's `src` points at one (e.g.
+`"/audio/Konner_Cabena_Commercial.mp3"`). After adding or replacing one, run
+`npm run assets:upload`.
 
 ## Images
 
@@ -94,22 +96,36 @@ must have a genuinely transparent background: `assets/logo-originals/` keeps
 the BBC file as supplied, whose "transparent" checkerboard was painted into
 the pixels and had to be removed.
 
-### Serving images from AWS
+### Hosting on AWS
 
-Every variant's filename carries a hash of its original
-(`KonnerHero-960.4518d0ba.avif`), so a replaced photo always gets new URLs.
-That makes them safe to cache forever. Upload the folder with its paths
-intact, then point the build at it:
+Production builds serve images and audio from **CloudFront**, in front of a
+private S3 bucket. The bucket blocks all public access; only this distribution
+can read it.
+
+| | |
+|---|---|
+| Bucket | `konner-cabena-assets` (eu-west-2, London) |
+| CloudFront | `E11QIQSEW7PJBW` → `https://d3maflhglpwh6j.cloudfront.net` |
+| Layout | `images/…` and `audio/…`, mirroring `public/` |
+
+`.env.production` sets `NEXT_PUBLIC_ASSET_BASE_URL` to the CloudFront URL, so
+`npm run build` points every image and reel there automatically. `npm run dev`
+ignores that file and serves them from `public/`. The URL isn't a secret — it
+ends up in the page's HTML — so the file is committed.
+
+**After adding or changing a photo, logo or reel:**
 
 ```bash
-aws s3 sync public/images s3://YOUR-BUCKET/images --cache-control "public, max-age=31536000, immutable"
+npm run images         # only if an image changed
+npm run assets:upload  # needs the AWS CLI signed in to the account
 ```
 
-```bash
-NEXT_PUBLIC_IMAGE_BASE_URL=https://YOUR-DISTRIBUTION.cloudfront.net npm run build
-```
-
-With the variable unset, images are served from the site's own `/images/`.
+Upload before you deploy a build that references new files, or those images
+will 404 until you do. Image filenames carry a content hash, so they're cached
+for a year and a changed photo always gets a new URL. Reel filenames don't
+change, so they're cached for a day and the script clears CloudFront's copies
+whenever one is uploaded. Nothing is ever deleted from the bucket, since an
+older deployed build may still reference older files.
 
 ## SEO
 

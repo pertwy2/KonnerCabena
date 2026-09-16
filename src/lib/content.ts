@@ -62,7 +62,7 @@ export type Reel = {
   duration: string;
   /** Seeds the deterministic waveform so each strip looks distinct. */
   seed: number;
-  /** Path to the audio file, e.g. "/reels/commercial.mp3". Null until supplied. */
+  /** Path under public/, e.g. "/audio/commercial.mp3" — served from the asset base URL when one is set. Null until supplied. */
   src: string | null;
 };
 
@@ -71,10 +71,10 @@ export const reels = {
   items: [
     // Titles are taken from the audio filenames and durations measured from the
     // files themselves — both are easy to override with Konner's own wording.
-    { id: "r1", title: "Commercial", duration: "0:53", seed: 1.2, src: "/Konner_Cabena_Commercial.mp3" },
-    { id: "r2", title: "Documentary", duration: "0:51", seed: 3.7, src: "/Konner_Cabena_Documenrary.mp3" },
-    { id: "r3", title: "Audiobook", duration: "2:04", seed: 6.1, src: "/Konner_Cabena_Audiobook.mp3" },
-    { id: "r4", title: "Gaming", duration: "2:06", seed: 8.9, src: "/Konner_Cabena_Gaming.mp3" },
+    { id: "r1", title: "Commercial", duration: "0:53", seed: 1.2, src: "/audio/Konner_Cabena_Commercial.mp3" },
+    { id: "r2", title: "Documentary", duration: "0:51", seed: 3.7, src: "/audio/Konner_Cabena_Documenrary.mp3" },
+    { id: "r3", title: "Audiobook", duration: "2:04", seed: 6.1, src: "/audio/Konner_Cabena_Audiobook.mp3" },
+    { id: "r4", title: "Gaming", duration: "2:06", seed: 8.9, src: "/audio/Konner_Cabena_Gaming.mp3" },
   ] satisfies Reel[],
 } as const;
 

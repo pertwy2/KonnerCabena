@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { assetUrl } from "@/lib/assets";
 import { reels } from "@/lib/content";
 import { wave } from "./waveform";
 import s from "./VoiceReels.module.scss";
@@ -70,7 +71,7 @@ export default function VoiceReels() {
     // Switching reels discards the old one's position, so clear its fill too.
     if (loadedRef.current !== id) {
       if (loadedRef.current) setProgress(loadedRef.current, 0);
-      el.src = src;
+      el.src = assetUrl(src);
       loadedRef.current = id;
     }
 
