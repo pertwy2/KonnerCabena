@@ -14,7 +14,7 @@ export const hero = {
   name: "Konner Cabena",
   /** Second half of the <h1> — together they carry the target search phrase. */
   role: "Voice Actor",
-  intro: "Commercial, narration, character and animation. In your studio or mine.",
+  intro: "Young in tone, rich in range, warm at heart.",
   /** Name of the original in assets/images/, without its extension. */
   photo: "KonnerHero",
 } as const;
@@ -47,7 +47,7 @@ export const about = {
 /**
  * Past clients, shown as a strip of logos under the About section.
  *
- * `logo` names an image in assets/images/ (run `npm run images` after adding
+ * `logo` names an image in assets/images/ (run `npm run assets:upload` after adding
  * one). `scale` balances them optically: a dense block logo reads larger than
  * a fine-lined one at the same height, so the heavy ones go smaller.
  */
@@ -66,7 +66,7 @@ export type Reel = {
   duration: string;
   /** Seeds the deterministic waveform so each strip looks distinct. */
   seed: number;
-  /** Path under public/, e.g. "/audio/commercial.mp3" — served from the asset base URL when one is set. Null until supplied. */
+  /** Path on the asset CDN, e.g. "/audio/commercial.mp3" (master in assets/audio/). Null until supplied. */
   src: string | null;
 };
 

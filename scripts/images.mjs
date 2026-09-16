@@ -4,7 +4,7 @@
  *   npm run images
  *
  * For each original it writes AVIF plus a fallback format (JPEG, or PNG for
- * transparent images) at a few widths into public/images/ (mirroring any
+ * transparent images) at a few widths into .asset-build/images/ (mirroring any
  * subfolder), and records what it
  * made in src/lib/images.generated.json, which <ResponsiveImage> reads to
  * build srcset. An image is named by its path without the extension:
@@ -26,7 +26,7 @@ import path from "node:path";
 import sharp from "sharp";
 
 const SRC_DIR = "assets/images";
-const OUT_DIR = "public/images";
+const OUT_DIR = ".asset-build/images";
 const MANIFEST = "src/lib/images.generated.json";
 
 /**

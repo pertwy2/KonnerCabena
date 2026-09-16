@@ -14,9 +14,8 @@ material illusion breaks.
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # static export -> ./out
-npm run images   # regenerate responsive photo variants (after adding/changing a photo)
+npm run assets:upload  # generate image variants, upload images + audio to S3 (see Hosting on AWS)
 npm run og       # regenerate public/og.png (only after changing the logo)
-npm run assets:upload  # push images + audio to S3/CloudFront (see Hosting on AWS)
 ```
 
 `npm run build` emits plain HTML to `out/`, which can be served by anything —
@@ -49,16 +48,18 @@ Still to supply:
 - The show reel embed URL, and the three testimonials
 - A real contact email
 
-**Audio:** MP3s live in `public/audio/` and each reel's `src` points at one (e.g.
-`"/audio/Konner_Cabena_Commercial.mp3"`). After adding or replacing one, run
-`npm run assets:upload`.
+**Audio:** reel masters live in `assets/audio/`, and each reel's `src` is its
+path on the CDN (e.g. `"/audio/Konner_Cabena_Commercial.mp3"`). After adding or
+replacing one, run `npm run assets:upload`.
 
 ## Images
 
 No image is served at its original size. Originals live in
-**`assets/images/`**, which isn't deployed; `npm run images` turns each one
-into AVIF plus a JPEG fallback (PNG for transparent images) in
-`public/images/`, and records them in `src/lib/images.generated.json`.
+**`assets/images/`**, which isn't deployed. `npm run assets:upload` turns each
+one into AVIF plus a JPEG fallback (PNG for transparent images), uploads them
+to S3, and records them in `src/lib/images.generated.json`. The generated
+files go to `.asset-build/`, which is git-ignored — the site never serves them
+locally.
 
 Each kind gets only the widths real devices actually pick: photos 480, 800
 and 960px; logos 120, 240 and 360px; the nav logo (`brand/logo`) 200 and
@@ -74,9 +75,9 @@ max-width, update its `sizes` to match**, or phones will quietly download
 larger files than they need.
 
 To add or replace a photo: put the original in `assets/images/`, run
-`npm run images`, and reference it in `content.ts` by filename without the
-extension (`photo: "KonnerHero"`). Commit `public/images/` and the manifest.
-Unchanged originals are skipped, and variants of replaced ones are deleted.
+`npm run assets:upload`, and reference it in `content.ts` by filename without
+the extension (`photo: "KonnerHero"`). Commit the original and
+`src/lib/images.generated.json`. Unchanged originals are skipped.
 
 ### Client logos
 
@@ -97,34 +98,34 @@ the pixels and had to be removed.
 
 ### Hosting on AWS
 
-Production builds serve images and audio from **CloudFront**, in front of a
-private S3 bucket. The bucket blocks all public access; only this distribution
-can read it.
+Every image and reel is served from **CloudFront**, in front of a private S3
+bucket — in dev and in production alike. There are no local copies in
+`public/`, so the site can't quietly work on your machine while pointing at
+files the bucket doesn't have. The bucket blocks all public access; only this
+distribution can read it.
 
 | | |
 |---|---|
 | Bucket | `konner-cabena-assets` (eu-west-2, London) |
 | CloudFront | `E11QIQSEW7PJBW` → `https://d3maflhglpwh6j.cloudfront.net` |
-| Layout | `images/…` and `audio/…`, mirroring `public/` |
+| Layout | `images/…` (generated variants) and `audio/…` (from `assets/audio/`) |
 
-`.env.production` sets `NEXT_PUBLIC_ASSET_BASE_URL` to the CloudFront URL, so
-`npm run build` points every image and reel there automatically. `npm run dev`
-ignores that file and serves them from `public/`. The URL isn't a secret — it
-ends up in the page's HTML — so the file is committed.
+The CloudFront URL is set in `src/lib/assets.ts`; `NEXT_PUBLIC_ASSET_BASE_URL`
+overrides it. Dev needs an internet connection to show images and play reels.
 
 **After adding or changing a photo, logo or reel:**
 
 ```bash
-npm run images         # only if an image changed
 npm run assets:upload  # needs the AWS CLI signed in to the account
 ```
 
-Upload before you deploy a build that references new files, or those images
-will 404 until you do. Image filenames carry a content hash, so they're cached
-for a year and a changed photo always gets a new URL. Reel filenames don't
-change, so they're cached for a day and the script clears CloudFront's copies
-whenever one is uploaded. Nothing is ever deleted from the bucket, since an
-older deployed build may still reference older files.
+It generates the image variants, uploads anything new, then checks that every
+file the site references is in the bucket and fails if one isn't. Run it
+before deploying a build that uses new files. Image filenames carry a content
+hash, so they're cached for a year and a changed photo always gets a new URL.
+Reel filenames don't change, so they're cached for a day and the script clears
+CloudFront's copies whenever one is uploaded. Nothing is ever deleted from the
+bucket, since an older deployed build may still reference older files.
 
 ## SEO
 

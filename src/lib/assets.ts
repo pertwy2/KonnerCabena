@@ -1,15 +1,19 @@
 /**
- * Where static assets — generated images and reel audio — are served from.
+ * Where images and reel audio are served from: the CloudFront distribution
+ * in front of the private S3 bucket "konner-cabena-assets" (eu-west-2).
  *
- * Empty means this site's own public/ folder, which is what `npm run dev`
- * uses. Production builds read NEXT_PUBLIC_ASSET_BASE_URL from .env.production
- * and point at the CloudFront distribution in front of the S3 bucket.
+ * There are no local copies. Dev and production builds both load assets from
+ * here, so the site can never quietly work locally while pointing at files the
+ * bucket doesn't have. `npm run assets:upload` generates the image variants,
+ * uploads them and the reels, and checks every file the site references is
+ * in the bucket.
  *
- * Paths are identical in both places: public/images/x.avif is served at
- * <base>/images/x.avif, public/audio/x.mp3 at <base>/audio/x.mp3.
- * `npm run assets:upload` keeps the bucket in step.
+ * NEXT_PUBLIC_ASSET_BASE_URL overrides it, e.g. to point a build at a
+ * different distribution.
  */
-export const ASSET_BASE_URL = (process.env.NEXT_PUBLIC_ASSET_BASE_URL ?? "").replace(/\/+$/, "");
+const CLOUDFRONT_URL = "https://d3maflhglpwh6j.cloudfront.net";
 
-/** `/audio/x.mp3` → `https://….cloudfront.net/audio/x.mp3`, or unchanged locally. */
+export const ASSET_BASE_URL = (process.env.NEXT_PUBLIC_ASSET_BASE_URL || CLOUDFRONT_URL).replace(/\/+$/, "");
+
+/** `/audio/x.mp3` → `https://….cloudfront.net/audio/x.mp3` */
 export const assetUrl = (path: string) => `${ASSET_BASE_URL}${path.startsWith("/") ? path : `/${path}`}`;
