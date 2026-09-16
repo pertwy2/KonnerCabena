@@ -46,7 +46,6 @@ styling disappears on its own.
 
 Still to supply:
 
-- Bio paragraphs
 - The show reel embed URL, and the three testimonials
 - A real contact email
 

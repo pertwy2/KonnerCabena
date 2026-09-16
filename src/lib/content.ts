@@ -23,8 +23,12 @@ export const about = {
   heading: "About",
   photo: "KonnerAbout",
   body: [
-    "[BIO PARAGRAPH ONE — who Konner is, the work he's known for, how he sounds. Two or three sentences.]",
-    "[BIO PARAGRAPH TWO — training, studio and kit, direction and turnaround. Two or three sentences.]",
+    "Hey! Thank you for stopping by and giving this a read. As you’ve probably guessed, my name is Konner and I’m a Voice Actor originally from Birmingham.",
+    "I didn’t always know “Voice Actor” was a real job people did. I’d always been a huge fan of video games and animation, and it wasn’t until my training at The Oxford School of Drama in 2022 that I realised being a Voice Actor was a genuine possibility, you mean I can get paid for the silly voices I do?! Sounds like a dream!",
+    "So there began my career as a VO artist. I’d always had a love for Theatre, Film and TV, and despite enjoying my work across all of those fields, something kept bringing me back to the audio world.",
+    "Audio, in my opinion, is a hugely underappreciated medium. It gives me the same experience as reading a book, in that there’s so much room for imagination, not everything is laid out for you. The face you and I picture when we hear someone’s voice can be so incredibly different, and that has always fascinated me.",
+    "Since then, I’ve had the chance to bring that same sense of imagination to a genuine breadth of work, from lending my voice to my first big video game project, to corporate narration that needs a bit of warmth and trust behind it. Represented by SNVoices, I’ve been lucky enough to keep building a career out of exactly the kind of silly voices, and not-so-silly ones, that got me hooked in the first place.",
+    "If you’ve got a project that needs a voice, whether it’s a character with a bit of chaos behind it, or a brand that needs someone people instantly trust, I’d love to hear from you. Drop me a message below, and let’s make something great together.",
   ],
   credentialsLabel: "Where to find me",
   credentials: [
@@ -72,7 +76,7 @@ export const reels = {
     // Titles are taken from the audio filenames and durations measured from the
     // files themselves — both are easy to override with Konner's own wording.
     { id: "r1", title: "Commercial", duration: "0:53", seed: 1.2, src: "/audio/Konner_Cabena_Commercial.mp3" },
-    { id: "r2", title: "Documentary", duration: "0:51", seed: 3.7, src: "/audio/Konner_Cabena_Documenrary.mp3" },
+    { id: "r2", title: "Documentary", duration: "0:51", seed: 3.7, src: "/audio/Konner_Cabena_Documentary.mp3" },
     { id: "r3", title: "Audiobook", duration: "2:04", seed: 6.1, src: "/audio/Konner_Cabena_Audiobook.mp3" },
     { id: "r4", title: "Gaming", duration: "2:06", seed: 8.9, src: "/audio/Konner_Cabena_Gaming.mp3" },
   ] satisfies Reel[],

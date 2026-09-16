@@ -6,11 +6,20 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 76px;
-  align-items: center;
+  // Top-aligned: the bio runs far taller than the photo, and centring would
+  // leave the photo floating mid-column with empty space above and below.
+  align-items: start;
 }
 
 .photo {
   @include pressed-deep;
+  // Stays beside the text while the bio is read, parked just under the
+  // compact nav bar — but only on screens tall enough to show all of it
+  // (~620px photo + ~112px offset). Undone once the columns stack.
+  @media (min-height: 760px) {
+    position: sticky;
+    top: calc(var(--nav-min) + 32px);
+  }
   border-radius: 26px;
   aspect-ratio: 4 / 5;
   display: flex;
@@ -171,6 +180,7 @@ a.agentName {
     gap: 40px;
   }
   .photo {
+    position: static;
     width: 100%;
     max-width: 380px;
     margin: 0 auto;
