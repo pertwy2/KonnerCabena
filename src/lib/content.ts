@@ -36,6 +36,13 @@ export const about = {
     { label: "Spotlight", href: "https://app.spotlight.com/1018-3499-6502" },
     { label: "SN Voices", href: "https://snvoices.com/gentlemen/konner-cabena/" },
   ] as { label: string; href: string | null }[],
+  /** `badge` names an image in assets/images/ (run `npm run assets:upload` after changing it). */
+  training: {
+    label: "Trained at",
+    name: "The Oxford School of Drama",
+    year: "2022",
+    badge: "badges/oxford-school-of-drama",
+  },
   representedByLabel: "Represented by",
   /** `href: null` renders the agency's name without a link. */
   agents: [

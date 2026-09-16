@@ -41,6 +41,26 @@
     ],
     "placeholder": "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAAAwBQCdASoUAB4APu1krE+ppSQiMBgIATAdiWcAwCgyyE9tZmHlFrnA6TURYhpJ7DLQAAD+9DLcUEkwVAoV9c6bWBzVlcaAAcKTkODPRpwiU1gyozOXQCu6euRS/YoodPc6eT6TNH0ynyYAAAA="
   },
+  "badges/oxford-school-of-drama": {
+    "width": 246,
+    "height": 246,
+    "widths": [
+      120,
+      240
+    ],
+    "hash": "1f02e902",
+    "formats": [
+      {
+        "ext": "avif",
+        "mime": "image/avif"
+      },
+      {
+        "ext": "png",
+        "mime": "image/png"
+      }
+    ],
+    "placeholder": null
+  },
   "brand/logo": {
     "width": 380,
     "height": 293,

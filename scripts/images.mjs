@@ -45,6 +45,10 @@ const MANIFEST = "src/lib/images.generated.json";
  * The brand mark (the nav logo) renders up to 195px wide; 380px, its full
  * source width, covers a 2x screen.
  *
+ * Badges (e.g. the drama school roundel) render ~72px and are cropped to a
+ * circle in CSS, so they're never trimmed: trimming a logo on a solid
+ * background would cut into the design itself.
+ *
  * Photos encode AVIF at quality 50. Graphics use 70: at 50, AVIF visibly
  * smudges fine lettering like the logo's "VOICE ACTOR", and at these sizes
  * the extra quality costs a few hundred bytes.
@@ -53,9 +57,16 @@ const PROFILES = {
   photo: { widths: [480, 800, 960], trim: false, placeholder: true, avifQuality: 50 },
   logo: { widths: [120, 240, 360], trim: true, placeholder: false, avifQuality: 70 },
   brand: { widths: [200, 380], trim: false, placeholder: false, avifQuality: 70 },
+  badge: { widths: [120, 240], trim: false, placeholder: false, avifQuality: 70 },
 };
 const profileFor = (name) =>
-  name.startsWith("logos/") ? PROFILES.logo : name.startsWith("brand/") ? PROFILES.brand : PROFILES.photo;
+  name.startsWith("logos/")
+    ? PROFILES.logo
+    : name.startsWith("brand/")
+      ? PROFILES.brand
+      : name.startsWith("badges/")
+        ? PROFILES.badge
+        : PROFILES.photo;
 
 const avif = (quality) => ({ ext: "avif", mime: "image/avif", encode: (img) => img.avif({ quality, effort: 5 }) });
 const JPG = { ext: "jpg", mime: "image/jpeg", encode: (img) => img.jpeg({ quality: 80, mozjpeg: true }) };

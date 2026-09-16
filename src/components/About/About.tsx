@@ -55,6 +55,16 @@ export default function About() {
           </p>
         ))}
 
+        <p className={s.credLabel}>{about.training.label}</p>
+        <div className={s.training}>
+          {/* The school's name sits right beside it, so the badge is decorative. */}
+          <ResponsiveImage name={about.training.badge} alt="" sizes="72px" className={s.badge} />
+          <div className={s.trainingText}>
+            <span className={s.agentName}>{about.training.name}</span>
+            <span className={s.agentKind}>{about.training.year}</span>
+          </div>
+        </div>
+
         <p className={s.credLabel}>{about.credentialsLabel}</p>
         <div className={s.creds}>
           {about.credentials.map((c) =>
