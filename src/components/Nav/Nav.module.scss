@@ -145,6 +145,16 @@
   pointer-events: auto;
 }
 
+// Laptops and desktops don't need the tab: with a mouse or trackpad, hovering
+// the logo shows its "Back to top" tooltip. Keyed to the input device rather
+// than a screen width, so touch devices — phones and tablets, where hover
+// never happens — keep it at any size.
+@media (hover: hover) and (pointer: fine) {
+  .topHint {
+    display: none;
+  }
+}
+
 .cta {
   @include accent-key($coral);
   font-weight: 600;
