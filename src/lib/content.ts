@@ -110,7 +110,7 @@ export const contact = {
   heading: "Get in touch",
   blurb:
     "Send a script, a brief, or just a rough idea of what you need. Every enquiry gets a real reply.",
-  email: "[EMAIL ADDRESS]",
+  email: "konnercabenava@gmail.com",
 } as const;
 
 export const nav = [

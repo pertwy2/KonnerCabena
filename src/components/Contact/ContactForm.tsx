@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { contact, isPlaceholder } from "@/lib/content";
-import { FORM_ENDPOINT } from "@/lib/site";
+import { EMAILJS, FORM_ENDPOINT } from "@/lib/site";
 import s from "./Contact.module.scss";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -10,9 +10,10 @@ type Status = "idle" | "sending" | "sent" | "error";
 // A static export has no API routes. The form posts to an external
 // endpoint if one is configured, otherwise it opens a pre-filled mail
 // client. With neither, it says so rather than silently discarding input.
+const hasEmailJs = Boolean(EMAILJS.serviceId && EMAILJS.templateId && EMAILJS.publicKey);
 const hasEndpoint = FORM_ENDPOINT.length > 0;
 const hasEmail = !isPlaceholder(contact.email);
-const wired = hasEndpoint || hasEmail;
+const wired = hasEmailJs || hasEndpoint || hasEmail;
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -21,6 +22,32 @@ export default function ContactForm() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
+
+    if (hasEmailJs) {
+      setStatus("sending");
+      try {
+        const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: EMAILJS.serviceId,
+            template_id: EMAILJS.templateId,
+            user_id: EMAILJS.publicKey,
+            template_params: {
+              name: String(data.get("name") ?? ""),
+              email: String(data.get("email") ?? ""),
+              projectType: String(data.get("projectType") ?? ""),
+              brief: String(data.get("brief") ?? ""),
+            },
+          }),
+        });
+        setStatus(res.ok ? "sent" : "error");
+        if (res.ok) form.reset();
+      } catch {
+        setStatus("error");
+      }
+      return;
+    }
 
     if (hasEndpoint) {
       setStatus("sending");

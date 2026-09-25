@@ -40,6 +40,18 @@ export const SITE = {
 export const FORM_ENDPOINT = "";
 
 /**
+ * EmailJS sends the form straight from the browser to the inbox connected
+ * in the EmailJS dashboard. All three values are safe to publish; restrict
+ * the allowed domains in the EmailJS dashboard. While any is empty, the
+ * form falls back to FORM_ENDPOINT, then to a mailto: link.
+ */
+export const EMAILJS = {
+  serviceId: "service_k94b2qm",
+  templateId: "template_rd7w9ts",
+  publicKey: "b-2rZVL_K0aQZP1mt",
+};
+
+/**
  * Social and credential links. `href: null` renders the entry as an
  * unfilled placeholder rather than a broken link, and keeps it out of
  * the JSON-LD `sameAs` array.
