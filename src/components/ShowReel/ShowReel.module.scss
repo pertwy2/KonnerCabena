@@ -29,6 +29,7 @@
 // The deepest recess on the page — the reel sits furthest into the material.
 .frame {
   @include pressed-deep;
+  position: relative;
   width: 100%;
   border-radius: 30px;
   aspect-ratio: 16 / 9;
@@ -39,6 +40,15 @@
   gap: 22px;
   padding: 40px;
   overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+// Behind the poster thumbnail so the play button and tag stay legible.
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 100%);
 }
 
 .embed {
@@ -51,6 +61,7 @@
 .key {
   @include accent-key($teal);
   @include raised-lg;
+  position: relative;
   width: 104px;
   height: 104px;
   border-radius: 50%;
@@ -60,6 +71,7 @@
 }
 
 .tag {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;

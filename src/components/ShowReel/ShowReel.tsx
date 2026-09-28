@@ -4,12 +4,18 @@ import { useState } from "react";
 import { phClass, showReel } from "@/lib/content";
 import s from "./ShowReel.module.scss";
 
+/** A youtube.com/embed/<id> URL's video id, for the thumbnail — null for anything else (e.g. Vimeo). */
+function youtubeId(embedUrl: string | null): string | null {
+  return embedUrl?.match(/youtube\.com\/embed\/([^/?]+)/)?.[1] ?? null;
+}
+
 export default function ShowReel() {
   const [playing, setPlaying] = useState(false);
 
   // With an embed URL the key swaps the frame for the real player;
   // without one it drives the visual state only.
   const showEmbed = playing && Boolean(showReel.embedUrl);
+  const posterId = youtubeId(showReel.embedUrl);
 
   return (
     <section id="showreel" className={s.section} aria-labelledby="showreel-title">
@@ -20,17 +26,25 @@ export default function ShowReel() {
         <p className={s.blurb}>{showReel.blurb}</p>
       </div>
 
-      <div className={s.frame}>
+      <div
+        className={s.frame}
+        style={
+          !showEmbed && posterId
+            ? { backgroundImage: `url(https://img.youtube.com/vi/${posterId}/maxresdefault.jpg)` }
+            : undefined
+        }
+      >
         {showEmbed ? (
           <iframe
             className={s.embed}
-            src={showReel.embedUrl ?? undefined}
+            src={`${showReel.embedUrl}?autoplay=1&rel=0`}
             title={`${showReel.heading} — show reel`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
         ) : (
           <>
+            {posterId && <div className={s.scrim} />}
             <button
               type="button"
               className={s.key}
