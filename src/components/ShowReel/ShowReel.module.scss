@@ -20,12 +20,6 @@
   @include section-heading;
 }
 
-.blurb {
-  margin: 0;
-  max-width: 46ch;
-  color: $muted;
-}
-
 // The deepest recess on the page — the reel sits furthest into the material.
 .frame {
   @include pressed-deep;
@@ -44,7 +38,7 @@
   background-position: center;
 }
 
-// Behind the poster thumbnail so the play button and tag stay legible.
+// Behind the poster thumbnail so the play button stays legible.
 .scrim {
   position: absolute;
   inset: 0;
@@ -60,7 +54,7 @@
 
 .key {
   @include accent-key($teal);
-  @include raised-lg;
+  box-shadow: none;
   position: relative;
   width: 104px;
   height: 104px;
@@ -68,33 +62,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.tag {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  letter-spacing: 0.08em;
-}
-
-.led {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #ccc2b6;
-  box-shadow: inset 1px 1px 2px rgba(150, 136, 124, 0.6);
-  transition:
-    background $ease,
-    box-shadow $ease;
-}
-
-.on {
-  background: var(--accent);
-  box-shadow:
-    0 0 10px var(--accent),
-    0 0 3px var(--accent);
 }
 
 @include at($bp-phone) {

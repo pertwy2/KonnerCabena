@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { phClass, showReel } from "@/lib/content";
+import { showReel } from "@/lib/content";
 import s from "./ShowReel.module.scss";
 
 /** A youtube.com/embed/<id> URL's video id, for the thumbnail — null for anything else (e.g. Vimeo). */
@@ -23,7 +23,6 @@ export default function ShowReel() {
         <h2 id="showreel-title" className={s.heading}>
           {showReel.heading}
         </h2>
-        <p className={s.blurb}>{showReel.blurb}</p>
       </div>
 
       <div
@@ -67,11 +66,6 @@ export default function ShowReel() {
                 </svg>
               )}
             </button>
-
-            <div className={s.tag}>
-              <span className={`${s.led} ${playing ? s.on : ""}`} />
-              <span className={phClass(showReel.label)}>{showReel.label}</span>
-            </div>
           </>
         )}
       </div>

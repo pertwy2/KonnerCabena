@@ -90,9 +90,7 @@ export const reels = {
 } as const;
 
 export const showReel = {
-  heading: "On Camera",
-  blurb: "One reel, start to finish.",
-  label: "Acting Reel 2025",
+  heading: "Acting Reel",
   /** A YouTube/Vimeo embed URL. Null until supplied. */
   embedUrl: "https://www.youtube.com/embed/zylpLT16aMg" as string | null,
 };
