@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   // No image optimisation server exists in a static export.
   images: { unoptimized: true },
   reactCompiler: true,
+  // Pin the project root, so a stray lockfile higher up (e.g. in the home
+  // folder) isn't mistaken for this project's.
+  turbopack: { root: __dirname },
   // `npm run dev` blocks its own scripts for any origin but localhost. Opening
   // the dev site by IP — the "Network" address, e.g. from a phone on the same
   // Wi-Fi — then leaves the page un-hydrated: it renders, but nothing
