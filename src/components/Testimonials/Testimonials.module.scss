@@ -21,9 +21,10 @@
 // Staggered rather than gridded — praise overheard, not a wall of cards.
 .quote {
   @include pressed;
+  position: relative;
   margin: 0;
   border-radius: 24px;
-  padding: 40px 46px;
+  padding: 48px 52px 40px;
   max-width: 76%;
   align-self: flex-start;
 }
@@ -32,17 +33,50 @@
   align-self: flex-end;
 }
 
+.lone {
+  align-self: center;
+}
+
+// Decorative only — an accent is fine here because it carries no meaning.
+.mark {
+  position: absolute;
+  top: 6px;
+  left: 26px;
+  font-family: var(--font-display), "Helvetica Neue", sans-serif;
+  font-size: 88px;
+  font-weight: 800;
+  line-height: 1;
+  color: $coral;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 .text {
-  margin: 0 0 18px;
+  margin: 0 0 24px;
   font-size: 21px;
   line-height: 1.6;
+  color: $ink;
+
+  p {
+    margin: 0;
+  }
 }
 
 .by {
-  font-size: 13px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 700;
+  color: $ink;
+}
+
+.role {
+  @include eyebrow;
+  font-size: 11px;
 }
 
 @include at($bp-stack) {
@@ -50,14 +84,16 @@
     max-width: 100%;
     align-self: stretch;
   }
-  .right {
-    align-self: stretch;
-  }
 }
 
 @include at($bp-phone) {
   .quote {
-    padding: 28px 24px;
+    padding: 40px 24px 28px;
+  }
+  .mark {
+    top: 2px;
+    left: 16px;
+    font-size: 64px;
   }
   .text {
     font-size: 17px;

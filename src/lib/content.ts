@@ -62,7 +62,7 @@ export const workedWith = {
   label: "Worked with",
   brands: [
     { name: "BBC", logo: "logos/bbc", scale: 0.75 },
-    { name: "Lightfader", logo: "logos/lightfader", scale: 1.3 },
+    { name: "Light Fader", logo: "logos/lightfader", scale: 1.3 },
     { name: "Sysdig", logo: "logos/sysdig", scale: 0.85 },
   ] as { name: string; logo: string; scale: number }[],
 };
@@ -95,14 +95,26 @@ export const showReel = {
   embedUrl: "https://www.youtube.com/embed/zylpLT16aMg" as string | null,
 };
 
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+};
+
+/** Add more by appending to `items` — the layout staggers them left and right. */
 export const testimonials = {
-  heading: "In their words",
+  heading: "Testimonials",
   items: [
-    { quote: "[TESTIMONIAL ONE — a short quote from a director, producer or agency. One or two sentences.]", attribution: "[NAME] · [ROLE, COMPANY]" },
-    { quote: "[TESTIMONIAL TWO — a short quote. One or two sentences.]", attribution: "[NAME] · [ROLE, COMPANY]" },
-    { quote: "[TESTIMONIAL THREE — a short quote. One or two sentences.]", attribution: "[NAME] · [ROLE, COMPANY]" },
-  ],
-} as const;
+    {
+      quote:
+        "Konner is a genuinely talented voice actor and a real pleasure to direct. He takes direction quickly and precisely, adapts his performance on the fly, and brings real character to every line. On Nioh 3, he delivered strong, consistent work across different roles. I’d happily work with him again and recommend him without hesitation.",
+      name: "Morgan Dufour",
+      role: "Project Manager",
+      company: "Light Fader",
+    },
+  ] satisfies Testimonial[],
+};
 
 export const contact = {
   heading: "Get in touch",
@@ -115,7 +127,7 @@ export const nav = [
   { label: "Voice Reels", href: "#reels" },
   { label: "About", href: "#about" },
   { label: "Show Reel", href: "#showreel" },
-  // { label: "Testimonials", href: "#words" },
+  { label: "Testimonials", href: "#words" },
 ] as const;
 
 /** `className={phClass(value)}` — styles a string only while it is unfilled. */

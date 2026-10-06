@@ -45,7 +45,6 @@ styling disappears on its own.
 
 Still to supply:
 
-- The show reel embed URL, and the three testimonials
 - A real contact email
 
 **Audio:** reel masters live in `assets/audio/`, and each reel's `src` is its
